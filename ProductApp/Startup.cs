@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductApp.Models;
 using ProductApp.Repository;
+using System.Data.Entity;
 
 namespace ProductApp
 {
@@ -23,7 +24,9 @@ namespace ProductApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DBContext>(options => options.UseSqlServer("Data Source = DESKTOP - 3NBQ5CP\\SQLEXPRESS; Initial Catalog = DB; Integrated Security = True"));
+            services.AddDbContext<DBContext>(options => {
+            options.UseSqlServer("Data Source=DESKTOP-3NBQ5CP\\SQLEXPRESS;Initial Catalog=DB;Integrated Security=True");
+        });
             services.Configure<AppSettings>(options => Configuration.GetSection("Appsetting").Bind(options));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllersWithViews();

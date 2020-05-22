@@ -44,8 +44,7 @@ namespace ProductApp.Repository
         public void Update(T entity)
         {
             dbSet.Attach(entity);
-            var entry = context.Entry(entity);
-            entry.State = EntityState.Modified;
+            context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

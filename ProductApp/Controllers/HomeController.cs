@@ -4,6 +4,7 @@ using ProductApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Threading.Tasks;
 using System.Web.Helpers;
 
 namespace ProductApp.Controllers
@@ -15,47 +16,39 @@ namespace ProductApp.Controllers
         private readonly IInvoicesRepository _invoicesRepository;
 
 
-        private static readonly IList<Products> _products;
-        public HomeController(IProductRepository productRepository)
+        public HomeController(IProductRepository productRepository, IDistributorsRepository distributorsRepository, IInvoicesRepository invoicesRepository)
         {
             this._productRepository = productRepository;
-        }
-
-        public HomeController(IDistributorsRepository distributorsRepository)
-        {
             this._distributorsRepository = distributorsRepository;
-        }
-
-        public HomeController(IInvoicesRepository invoicesRepository)
-        {
             this._invoicesRepository = invoicesRepository;
         }
 
-        
+     
+
         public IActionResult Index()
         {
-            
+
             return View();
 
-
-        }
-        [Route("Products")]
-        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public ActionResult Products()
-        {
-            return Json(_products);
         }
 
-        public Products GetProducts(int id)
+
+        [HttpGet("{id}")]
+        public ActionResult <Products> GetProducts(int id)
         {
 
-           return _productRepository.GetById(id);
-           
+           var allProducts = _productRepository.GetById(id);
+            return View( allProducts);
+            
         }
 
+        [HttpGet]
         public IEnumerable<Products> GetAllProducts()
         {
-            return _productRepository.GetAll();
+
+             return _productRepository.GetAll();
+
+           
 
         }
 
@@ -70,8 +63,21 @@ namespace ProductApp.Controllers
 
         }
 
+        public static void Update( int id, string name, int qty, Distributors distributors)
+        {
+            Distributors entity = new Distributors() { DistributorId = id, DistributorName = name, Qty = qty };
 
-        public Invoices GetInvoices(int id)
+            using (var context = new DBContext())
+            {
+                context.Distributors.Attach(entity);
+                context.Entry(entity).Property(X => X.Qty).IsModified = true;
+                context.SaveChanges();
+            }
+
+
+        }
+
+            public Invoices GetInvoices(int id)
         {
             return _invoicesRepository.GetById(id);
         }
