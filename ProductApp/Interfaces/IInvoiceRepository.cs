@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Repository
 {
-   public interface IInvoicesRepository : IRepository<Invoices>
+   public interface IInvoiceRepository : IBaseRepository<Invoice>
     {
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProductApp.Models
 {
-    public partial class Invoices
+    public class Invoice
     {
         public int InvoiceId { get; set; }
         public DateTime? InvoiceDate { get; set; }

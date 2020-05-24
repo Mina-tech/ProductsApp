@@ -3,21 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Data.Entity;
 using ProductApp.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace ProductApp.Repository
 {
-    public class Repository <T> : IRepository<T> where T : class
+    public class BaseRepository <T> : IBaseRepository<T> where T : class
     {
-        protected DbContext context;
+        protected DBContext context;
         protected DbSet<T> dbSet;
-        
-        public Repository (DbContext context)
+
+        public BaseRepository(DBContext context)
         {
             this.context = context;
             this.dbSet = context.Set<T>();
-                
+
         }
 
         public void Delete(T entity)

@@ -10,11 +10,11 @@ using System.Data.Entity;
 
 namespace ProductApp
 {
-    public class ProductsRepository : Repository<Products>, IProductRepository
+    public class ProductRepository : BaseRepository<Product>, IProductRepository
 
     {
 
-        public ProductsRepository(DbContext context)
+        public ProductRepository(DBContext context)
             : base(context)
         {
             

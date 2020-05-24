@@ -28,7 +28,10 @@ namespace ProductApp
             options.UseSqlServer("Data Source=DESKTOP-3NBQ5CP\\SQLEXPRESS;Initial Catalog=DB;Integrated Security=True");
         });
             services.Configure<AppSettings>(options => Configuration.GetSection("Appsetting").Bind(options));
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
+            services.AddScoped<IProductRepository,ProductRepository>();
+            services.AddScoped<IDistributorRepository, DistributorRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
             services.AddControllersWithViews();
             services.AddMvc();
             // In production, the React files will be served from this directory

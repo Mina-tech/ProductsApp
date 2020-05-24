@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Repository
 {
-    public class DistributorsRepository : Repository<Distributors>, IDistributorsRepository
+    public class DistributorRepository : BaseRepository<Distributor>, IDistributorRepository
     {
-        public DistributorsRepository(DbContext context)
+        public DistributorRepository(DBContext context)
            : base(context)
         {
 

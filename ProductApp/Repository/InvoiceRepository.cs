@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Repository
 {
-    public class InvoicesRepository : Repository<Invoices>, IInvoicesRepository
+    public class InvoiceRepository : BaseRepository<Invoice>, IInvoiceRepository
     {
-        public InvoicesRepository(DbContext context)
+        public InvoiceRepository(DBContext context)
            : base(context)
         {
 

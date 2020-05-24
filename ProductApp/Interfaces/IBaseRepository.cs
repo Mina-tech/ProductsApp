@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Repository
 {
-    public interface IRepository<T> where T : class
+    public interface IBaseRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         T GetById(int id);

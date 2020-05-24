@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProductApp.Repository
 {
-    public interface IDistributorsRepository : IRepository<Distributors>
+    public interface IProductRepository : IBaseRepository<Product>
     {
+      
     }
 }

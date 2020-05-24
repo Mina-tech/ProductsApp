@@ -15,9 +15,9 @@ namespace ProductApp.Models
         {
         }
 
-        public virtual DbSet<Distributors> Distributors { get; set; }
-        public virtual DbSet<Invoices> Invoices { get; set; }
-        public virtual DbSet<Products> Products { get; set; }
+        public virtual DbSet<Distributor> Distributors { get; set; }
+        public virtual DbSet<Invoice> Invoices { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -30,7 +30,7 @@ namespace ProductApp.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Distributors>(entity =>
+            modelBuilder.Entity<Distributor>(entity =>
             {
                 entity.HasKey(e => e.DistributorId)
                     .HasName("PK__Distribu__FD1AEB9E6FD78F2D");
@@ -38,9 +38,11 @@ namespace ProductApp.Models
                 entity.Property(e => e.DistributorId).ValueGeneratedNever();
 
                 entity.Property(e => e.DistributorName).HasColumnType("text");
+                entity.Property(e => e.Qty).HasColumnType("int");
+
             });
 
-            modelBuilder.Entity<Invoices>(entity =>
+            modelBuilder.Entity<Invoice>(entity =>
             {
                 entity.HasKey(e => e.InvoiceId)
                     .HasName("PK__Invoices__D796AAB5116EEA6D");
@@ -54,7 +56,7 @@ namespace ProductApp.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Products>(entity =>
+            modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.ProductId)
                     .HasName("PK__Products__B40CC6CD16ABAFCD");

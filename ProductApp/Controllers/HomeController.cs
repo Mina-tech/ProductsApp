@@ -3,24 +3,25 @@ using ProductApp.Models;
 using ProductApp.Repository;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Threading.Tasks;
-using System.Web.Helpers;
+
 
 namespace ProductApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IProductRepository _productRepository;
-        private readonly IDistributorsRepository _distributorsRepository;
-        private readonly IInvoicesRepository _invoicesRepository;
+        private readonly IDistributorRepository _distributorRepository;
+        private readonly IInvoiceRepository _invoiceRepository;
 
 
-        public HomeController(IProductRepository productRepository, IDistributorsRepository distributorsRepository, IInvoicesRepository invoicesRepository)
+        public HomeController(
+            IProductRepository productRepository, 
+            IDistributorRepository distributorRepository, 
+            IInvoiceRepository invoiceRepository)
         {
             this._productRepository = productRepository;
-            this._distributorsRepository = distributorsRepository;
-            this._invoicesRepository = invoicesRepository;
+            this._distributorRepository = distributorRepository;
+            this._invoiceRepository = invoiceRepository;
         }
 
      
@@ -32,18 +33,17 @@ namespace ProductApp.Controllers
 
         }
 
-
-        [HttpGet("{id}")]
-        public ActionResult <Products> GetProducts(int id)
+        
+        [HttpGet]
+        public Product GetProduct(int id)
         {
 
-           var allProducts = _productRepository.GetById(id);
-            return View( allProducts);
+           return _productRepository.GetById(id);
             
         }
-
+        
         [HttpGet]
-        public IEnumerable<Products> GetAllProducts()
+        public IEnumerable<Product> GetAllProducts()
         {
 
              return _productRepository.GetAll();
@@ -52,20 +52,21 @@ namespace ProductApp.Controllers
 
         }
 
-        public Distributors GetDistributors(int id)
+        public Distributor GetDistributors(int id)
         {
-            return _distributorsRepository.GetById(id);
+            return _distributorRepository.GetById(id);
         }
 
-        public IEnumerable<Distributors> GetAllDistributors()
+        public IEnumerable<Distributor> GetAllDistributors()
         {
-            return _distributorsRepository.GetAll();
+            return _distributorRepository.GetAll();
 
         }
 
-        public static void Update( int id, string name, int qty, Distributors distributors)
+        [HttpPost]
+        public static void UpdateDistributor( int id, string name, int qty, Distributor distributor)
         {
-            Distributors entity = new Distributors() { DistributorId = id, DistributorName = name, Qty = qty };
+            Distributor entity = new Distributor() { DistributorId = id, DistributorName = name, Qty = qty };
 
             using (var context = new DBContext())
             {
@@ -77,14 +78,14 @@ namespace ProductApp.Controllers
 
         }
 
-            public Invoices GetInvoices(int id)
+        public Invoice GetInvoices(int id)
         {
-            return _invoicesRepository.GetById(id);
+            return _invoiceRepository.GetById(id);
         }
 
-        public IEnumerable<Invoices> GetAllInvoices()
+        public IEnumerable<Invoice> GetAllInvoices()
         {
-            return _invoicesRepository.GetAll();
+            return _invoiceRepository.GetAll();
 
         }
     }
