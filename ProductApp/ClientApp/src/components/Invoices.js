@@ -34,9 +34,11 @@ export class Invoices extends Component {
                                 <Form>
                                     <Form.Group controlId="exampleForm.SelectCustom">
                                         <Form.Label><input list="invoices" id="invoiceId" name="invoiceNumber" placeholder="Tip profakture" /></Form.Label>
-                                            <datalist id="invoices">
+                                        <datalist id="invoices">
 
-                                                <option>{invoice.id}</option>
+                                            
+
+                                                <option>{invoice.invoiceId}</option>
 
                                             </datalist>
                                       
