@@ -38,8 +38,6 @@ namespace ProductApp.Models
                 entity.Property(e => e.DistributorId).ValueGeneratedNever();
 
                 entity.Property(e => e.DistributorName).HasColumnType("text");
-                entity.Property(e => e.Qty).HasColumnType("int");
-
             });
 
             modelBuilder.Entity<Invoice>(entity =>
@@ -49,11 +47,54 @@ namespace ProductApp.Models
 
                 entity.Property(e => e.InvoiceId).ValueGeneratedNever();
 
+                entity.Property(e => e.Address)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.City).HasColumnType("text");
+
+                entity.Property(e => e.ContactHomeNumber)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ContactMobileNumber)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ContactPerson).HasColumnType("text");
+
+                entity.Property(e => e.ContactPersonJobPosition).HasColumnType("text");
+
+                entity.Property(e => e.Country).HasColumnType("text");
+
+                entity.Property(e => e.DeliveryDate).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.InvoiceDate).HasColumnType("date");
+
+                entity.Property(e => e.InvoiceType).HasColumnType("text");
+
+                entity.Property(e => e.MethodOfDelivery).HasColumnType("text");
+
+                entity.Property(e => e.PaymentDate).HasColumnType("date");
+
+                entity.Property(e => e.PlaceOfDelivery).HasColumnType("text");
 
                 entity.Property(e => e.Products)
                     .HasMaxLength(200)
                     .IsUnicode(false);
+
+                entity.Property(e => e.WebAddress)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Distributor)
+                    .WithMany(p => p.Invoices)
+                    .HasForeignKey(d => d.DistributorId)
+                    .HasConstraintName("FK__Invoices__Distri__34C8D9D1");
             });
 
             modelBuilder.Entity<Product>(entity =>

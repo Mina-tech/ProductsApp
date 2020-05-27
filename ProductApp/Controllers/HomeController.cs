@@ -15,8 +15,8 @@ namespace ProductApp.Controllers
 
 
         public HomeController(
-            IProductRepository productRepository, 
-            IDistributorRepository distributorRepository, 
+            IProductRepository productRepository,
+            IDistributorRepository distributorRepository,
             IInvoiceRepository invoiceRepository)
         {
             this._productRepository = productRepository;
@@ -24,7 +24,7 @@ namespace ProductApp.Controllers
             this._invoiceRepository = invoiceRepository;
         }
 
-     
+
 
         public IActionResult Index()
         {
@@ -33,22 +33,22 @@ namespace ProductApp.Controllers
 
         }
 
-        
+
         [HttpGet]
         public Product GetProduct(int id)
         {
 
-           return _productRepository.GetById(id);
-            
+            return _productRepository.GetById(id);
+
         }
-        
+
         [HttpGet]
         public IEnumerable<Product> GetAllProducts()
         {
 
-             return _productRepository.GetAll();
+            return _productRepository.GetAll();
 
-           
+
 
         }
 
@@ -63,15 +63,15 @@ namespace ProductApp.Controllers
 
         }
 
-        [HttpPost]
-        public static void UpdateDistributor( int id, string name, int qty, Distributor distributor)
+        [HttpPut("{qty}")]
+        public static void UpdateDistributor(int id, string name, int qty, Distributor distributor)
         {
             Distributor entity = new Distributor() { DistributorId = id, DistributorName = name, Qty = qty };
 
             using (var context = new DBContext())
             {
-                context.Distributors.Attach(entity);
-                context.Entry(entity).Property(X => X.Qty).IsModified = true;
+                context.Attach(entity);
+                context.Entry(entity).Property(p => p.Qty).IsModified = true;
                 context.SaveChanges();
             }
 
@@ -82,7 +82,8 @@ namespace ProductApp.Controllers
         {
             return _invoiceRepository.GetById(id);
         }
-
+        
+        [HttpGet]
         public IEnumerable<Invoice> GetAllInvoices()
         {
             return _invoiceRepository.GetAll();
