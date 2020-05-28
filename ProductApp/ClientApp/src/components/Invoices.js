@@ -170,10 +170,6 @@ export class Invoices extends Component {
                    
                 </ul>
             </div>
-
-          
-            
-           
         );
     }
         render() {
