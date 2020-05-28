@@ -1,0 +1,11 @@
+﻿.fakture li {
+    display: inline-block;
+    width: 40%;
+    margin: 0 5% 20px 5%;
+    list-style: none;
+    border: 2px solid gray;
+}
+
+.fakture li input {
+    width: 100%;
+}

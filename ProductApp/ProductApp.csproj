@@ -38,6 +38,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\Invoices - Copy.js" />
+    <None Remove="ClientApp\src\components\StyleSheet.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
