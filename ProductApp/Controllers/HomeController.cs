@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductApp.Interfaces;
 using ProductApp.Models;
 using ProductApp.Repository;
 using System;
@@ -12,16 +13,18 @@ namespace ProductApp.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IDistributorRepository _distributorRepository;
         private readonly IInvoiceRepository _invoiceRepository;
-
+        private readonly IInvoiceProductRepository _invoiceProductRepository;
 
         public HomeController(
             IProductRepository productRepository,
             IDistributorRepository distributorRepository,
-            IInvoiceRepository invoiceRepository)
+            IInvoiceRepository invoiceRepository,
+            IInvoiceProductRepository invoiceProductRepository)
         {
             this._productRepository = productRepository;
             this._distributorRepository = distributorRepository;
             this._invoiceRepository = invoiceRepository;
+            this._invoiceProductRepository = invoiceProductRepository;
         }
 
 
@@ -87,6 +90,16 @@ namespace ProductApp.Controllers
         public IEnumerable<Invoice> GetAllInvoices()
         {
             return _invoiceRepository.GetAll();
+
+        }
+
+        [HttpGet]
+        public IEnumerable<InvoiceProduct> GetAllInvoiceProducts()
+        {
+
+            return _invoiceProductRepository.GetAll();
+
+
 
         }
     }

@@ -6,10 +6,11 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { HelloWorld } from './components/HelloWorld';
 import { Invoices } from './components/Invoices';
+import { InvoiceProduct } from './components/InvoiceProduct';
 
 import './custom.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 export default class App extends Component {
   static displayName = App.name;
@@ -22,6 +23,7 @@ export default class App extends Component {
         <Route path='/fetch-data' component={FetchData} />
             <Route path='/hello-world' component={HelloWorld} />
             <Route path='/invoices' component={Invoices} />
+            <Route path='/invoiceProduct' component={InvoiceProduct} />
       </Layout>
     );
   }

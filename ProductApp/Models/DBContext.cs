@@ -18,6 +18,7 @@ namespace ProductApp.Models
         public virtual DbSet<Distributor> Distributors { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<InvoiceProduct> InvoiceProducts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -109,6 +110,42 @@ namespace ProductApp.Models
                 entity.Property(e => e.ProductName).HasColumnType("text");
 
                 entity.Property(e => e.Sku)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<InvoiceProduct>(entity =>
+            {
+                entity.HasKey(e => e.Sku)
+                    .HasName("PK__InvoiceP__CA1FD3C4DF245E19");
+
+                entity.Property(e => e.Sku)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Currency)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Discount).HasColumnType("decimal(5, 2)");
+
+                entity.Property(e => e.DistributorName).HasColumnType("text");
+
+                entity.Property(e => e.GrossPrice).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.GrossWeight).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.NetPrice).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.NetWeight).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.ProductName).HasColumnType("text");
+
+                entity.Property(e => e.UnitOfMeasure)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.WarehouseId)
                     .HasMaxLength(200)
                     .IsUnicode(false);
             });

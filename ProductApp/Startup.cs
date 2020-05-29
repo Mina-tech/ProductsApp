@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProductApp.Interfaces;
 using ProductApp.Models;
 using ProductApp.Repository;
 using System.Data.Entity;
@@ -32,6 +33,7 @@ namespace ProductApp
             services.AddScoped<IProductRepository,ProductRepository>();
             services.AddScoped<IDistributorRepository, DistributorRepository>();
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            services.AddScoped<IInvoiceProductRepository, InvoiceProductRepository>();
             services.AddControllersWithViews();
             services.AddMvc();
             // In production, the React files will be served from this directory

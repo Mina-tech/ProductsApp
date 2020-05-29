@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './Invoices.css';
 import { Form } from 'react-bootstrap';
+import  DatePicker from 'react-date-picker';
 
 export class Invoices extends Component {
     static displayName = Invoices.name;
@@ -8,19 +9,21 @@ export class Invoices extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            invoice: [], loading: true
+            invoice: [], loading: true, date: new Date(),
         }
-    }
-
+        }
+    
+   
         componentDidMount() {
             this.GetInvoice();
         }
 
         
-    static getInvoices(invoices) {
+    static getInvoice(invoices) {
+        
         return (
             <div class="container">
-                <ul className="fakture">
+                <ul className="invoice">
                     <li>
                         <input list="invoiceType" placeholder="Tip profakture" />
                         <datalist id="invoiceType">
@@ -46,12 +49,14 @@ export class Invoices extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="invoiceDate" placeholder="Datum profakture" />
-                        <datalist id="invoiceDate">
+                                        
+                        <label for="invoiceDate">Datum profakture:</label>
+                        <input list="invoiceDate"  type="date" id="invoiceDate" />
+                        <datalist id= "invoiceDate">
                             {invoices.map(invoice =>
-                                <option>{new Date(invoice.invoiceDate).getMonth()}/{new Date(invoice.invoiceDate).getDate()}/{new Date(invoice.invoiceDate).getFullYear()}</option>
-                            )}
-                        </datalist>
+                                <option>{invoice.invoiceDate}</option>
+                                    )}
+                            </datalist>
                     </li>
                     <li>
                         <input list="invoiceAddress" placeholder="Adresa firme" />
@@ -62,10 +67,11 @@ export class Invoices extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="invoiceDeliveryDate" placeholder="Datum isporuke" />
+                        <label for="invoiceDeliveryDate">Datum isporuke:</label>
+                        <input list="invoiceDeliveryDate" type = "date" />
                         <datalist id="invoiceDeliveryDate">
                             {invoices.map(invoice =>
-                                <option>{new Date(invoice.invoiceDeliveryDate).getMonth()}/{new Date(invoice.invoiceDeliveryDate).getDate()}/{new Date(invoice.invoiceDeliveryDate).getFullYear()}</option>
+                                <option>{invoice.invoiceDeliveryDate}</option>
                             )}
                         </datalist>
                     </li>
@@ -78,12 +84,11 @@ export class Invoices extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="invoicePaymentDate" placeholder="Datum plaćanja" />
-                        <datalist id="invoicePaymentDate">
-                            {invoices.map(invoice =>
-                                <option>{new Date(invoice.invoicePaymentDate).getMonth()}/{new Date(invoice.PaymentDate).getDate()}/{new Date(invoice.PaymentDate).getFullYear()}</option>
-                            )}
-                        </datalist>
+                        <label for="invoicePaymentDate">Datum plaćanja:</label>
+                        <input list="invoicePaymentDate" type="date" value="
+                            invoices.map(invoice =>
+                                invoice.invoicePaymentDate" />
+                        
                     </li>
                     <li>
                         <input list="invoiceCountry" placeholder="Država" />
@@ -171,19 +176,20 @@ export class Invoices extends Component {
                 </ul>
             </div>
         );
-    }
+}
+     
         render() {
             let contents = this.state.loading
                 ? <p><em>Loading...</em></p>
-                : Invoices.getInvoices(this.state.invoice);
+                : Invoices.getInvoice(this.state.invoice);
             return (
                 <div>
                     <p>Invoices</p>
                     {contents}
+                   
                 </div>
             );
         }
-
         async GetInvoice() {
             const response = await fetch('/Home/GetAllInvoices');
             const data = await response.json();
