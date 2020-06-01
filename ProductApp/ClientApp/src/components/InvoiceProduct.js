@@ -52,7 +52,7 @@ export class InvoiceProduct extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="sku" placeholder="Interna šifra" name="sku" value={sku} onChange={handleChange.bind(this)} />
+                        <input list="sku" placeholder="Interna šifra" name="sku" value={sku} onChange={handleChange.bind(this)}/>
                         <datalist id="sku">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.sku}</option>
@@ -139,8 +139,8 @@ export class InvoiceProduct extends Component {
                             )}
                         </datalist>
                     </li>
-                </ul>                
-            </div>
+                    </ul>
+                        </div>
 
         );
     }

@@ -4,12 +4,52 @@
     margin: 0 5% 20px 5%;
     list-style: none;
     border: 2px solid gray;
+    vertical-align: top;
 }
-
 .invoice li input {
-    width: 100%;
-}
+        width: 100%;
+    }
 
 td {
-    border: 1px solid red;
+    border: 1px solid gray;
 }
+
+.datepicker {
+    display: block;
+    font-size: 16px;
+    border-width: medium;
+    line-height: 1.3;
+    padding: 0;
+    border: none;
+    vertical-align: top;
+}
+
+label {
+    margin-bottom: 0;
+}
+
+.datepicker-list-item {
+    position: relative;
+}
+
+    .datepicker-list-item .react-datepicker-wrapper {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .datepicker-list-item label {
+        margin-bottom: 0;
+        padding: 5px;
+        color: rgb(117, 117, 117);
+    }
+
+li.textarea-list-item {
+    border: none;
+}
+
+    li.textarea-list-item textarea {
+        border: 2px solid gray;
+    }
+   
