@@ -6,7 +6,7 @@ export class FetchData extends Component {
   constructor(props) {
     super(props);
       this.state = {
-          products: [], singleProduct: {}, loading: true, productId: 1, distributor: { id: 1, name: 'Dobavljac', quantity: 10 } };
+          products: [], singleProduct: {}, loading: true, productId: 1, distributor: { id: 1, name: 'Dobavljac', quantity: 11 } };
   }
 
   componentDidMount() {

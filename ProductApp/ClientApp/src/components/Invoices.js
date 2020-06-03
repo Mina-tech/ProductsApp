@@ -11,13 +11,10 @@ export class Invoices extends Component {
         this.state = {
             invoice: [],
             loading: true,
-            date: new Date(),
             invoiceDate: new Date(),
             invoiceDeliveryDate: new Date(),
             invoicePaymentDate: new Date(),
         }
-
-
     }
 
     componentDidMount() {

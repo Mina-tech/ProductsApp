@@ -15,16 +15,13 @@ export class InvoiceProduct extends Component {
             discount: '',
             grossPrice: '',
         }
-
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
-        let name = event.target.name;
+    handleChange = (e) => {
         this.setState({
-            [name]: event.target.value
+            [e.target.name]: e.target.value
         });
-        
+
     }
 
     componentDidMount() {
@@ -52,7 +49,7 @@ export class InvoiceProduct extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="sku" placeholder="Interna šifra" name="sku" value={sku} onChange={handleChange.bind(this)}/>
+                        <input list="sku" placeholder="Interna šifra" name="sku" value={sku} onChange={handleChange.bind(this)} />
                         <datalist id="sku">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.sku}</option>

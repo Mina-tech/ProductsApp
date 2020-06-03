@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProductApp.Interfaces;
 using ProductApp.Models;
 using ProductApp.Repository;
@@ -66,19 +67,21 @@ namespace ProductApp.Controllers
 
         }
 
-        [HttpPut("{qty}")]
-        public static void UpdateDistributor(int id, string name, int qty, Distributor distributor)
+        [HttpPost]
+        public static void UpdateDistributor( int id, string name, int qty)
         {
-            Distributor entity = new Distributor() { DistributorId = id, DistributorName = name, Qty = qty };
+            Distributor distributor = new Distributor() { DistributorId = id, DistributorName = name, Qty = qty };
 
             using (var context = new DBContext())
             {
-                context.Attach(entity);
-                context.Entry(entity).Property(p => p.Qty).IsModified = true;
+
+                context.Attach(distributor);
+                context.Entry(distributor).Property(p => p.Qty).IsModified = true;
                 context.SaveChanges();
+
+                
             }
-
-
+       
         }
 
         public Invoice GetInvoices(int id)
