@@ -15,5 +15,12 @@ namespace ProductApp.Repository
 
         }
 
+        public List<Invoice> FilterInvoices(DateTime? date)
+        {
+            return context.Invoices
+                .Where(w => w.InvoiceDate >= date)
+                .ToList();
+        }
+
     }
 }

@@ -34,6 +34,8 @@ namespace ProductApp
             services.AddScoped<IDistributorRepository, DistributorRepository>();
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
             services.AddScoped<IInvoiceProductRepository, InvoiceProductRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IWarehouseRepository, WarehouseRepository>();
             services.AddControllersWithViews();
             services.AddMvc();
             // In production, the React files will be served from this directory
@@ -67,7 +69,7 @@ namespace ProductApp
             app.UseSpaStaticFiles();
 
             app.UseRouting();
-
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

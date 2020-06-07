@@ -14,5 +14,16 @@ namespace ProductApp.Repository
         {
 
         }
+
+        public void InsertInvoiceProduct(InvoiceProduct invoiceProduct)
+        {
+            context.InvoiceProducts.Add(invoiceProduct);
+            
+        }
+
+        public void Save()
+        {
+            context.SaveChanges();
+        }
     }
 }

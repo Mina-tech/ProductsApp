@@ -9,7 +9,7 @@ namespace ProductApp.Repository
     {
         IEnumerable<T> GetAll();
         T GetById(int id);
-        void Insert(T entity);
+        void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
     }

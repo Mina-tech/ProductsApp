@@ -5,8 +5,9 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { HelloWorld } from './components/HelloWorld';
-import { Invoices } from './components/Invoices';
+import { Invoice } from './components/Invoice';
 import { InvoiceProduct } from './components/InvoiceProduct';
+import { Invoices } from './components/Invoices';
 
 import './custom.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,8 +23,9 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
             <Route path='/hello-world' component={HelloWorld} />
-            <Route path='/invoices' component={Invoices} />
+            <Route path='/invoice' component={Invoice}/>
             <Route path='/invoiceProduct' component={InvoiceProduct} />
+            <Route path='/invoices' component={Invoices} />
       </Layout>
     );
   }

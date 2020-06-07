@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProductApp.Models
 {
-    public partial class InvoiceProduct
+    public class InvoiceProduct
     {
         public string ProductName { get; set; }
         public string DistributorName { get; set; }

@@ -8,5 +8,6 @@ namespace ProductApp.Repository
 {
    public interface IInvoiceRepository : IBaseRepository<Invoice>
     {
+        List<Invoice> FilterInvoices(DateTime? date);
     }
 }

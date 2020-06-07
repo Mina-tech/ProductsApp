@@ -5,7 +5,8 @@ using ProductApp.Models;
 using ProductApp.Repository;
 using System;
 using System.Collections.Generic;
-
+using System.Data;
+using System.Threading.Tasks;
 
 namespace ProductApp.Controllers
 {
@@ -29,13 +30,6 @@ namespace ProductApp.Controllers
         }
 
 
-
-        public IActionResult Index()
-        {
-
-            return View();
-
-        }
 
 
         [HttpGet]
@@ -84,11 +78,13 @@ namespace ProductApp.Controllers
        
         }
 
-        public Invoice GetInvoices(int id)
+
+        [HttpGet]
+        public Invoice GetInvoice(int id)
         {
             return _invoiceRepository.GetById(id);
         }
-        
+
         [HttpGet]
         public IEnumerable<Invoice> GetAllInvoices()
         {
@@ -105,5 +101,29 @@ namespace ProductApp.Controllers
 
 
         }
-    }
+        [Route("/Home/InsertInvoiceProduct")]
+        [HttpPost]
+         public InvoiceProduct InsertInvoiceProduct([FromBody]InvoiceProduct invoiceProduct)
+         {
+          
+            InvoiceProduct insertInvoice = new InvoiceProduct();
+           
+            
+                insertInvoice.Sku = invoiceProduct.Sku;
+                insertInvoice.ProductName = invoiceProduct.ProductName;
+                insertInvoice.DistributorName = invoiceProduct.DistributorName;
+                insertInvoice.GrossPrice = invoiceProduct.GrossPrice;
+                insertInvoice.Qty = invoiceProduct.Qty;
+                insertInvoice.Discount = invoiceProduct.Discount;
+
+                _invoiceProductRepository.Add(insertInvoice);
+                _invoiceProductRepository.Save();
+                return insertInvoice;
+            
+
+         }
+          
+         
+
+        }
 }

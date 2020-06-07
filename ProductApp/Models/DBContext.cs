@@ -14,11 +14,12 @@ namespace ProductApp.Models
             : base(options)
         {
         }
-
         public virtual DbSet<Distributor> Distributors { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<InvoiceProduct> InvoiceProducts { get; set; }
+        public virtual DbSet<Customers> Customers { get; set; }
+        public virtual DbSet<Warehouses> Warehouses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,6 +32,28 @@ namespace ProductApp.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Customers>(entity =>
+            {
+                entity.HasKey(e => e.CustomerId)
+                    .HasName("PK__Customer__A4AE64D8EA36923E");
+
+                entity.Property(e => e.CustomerId).ValueGeneratedNever();
+
+                entity.Property(e => e.CustomerName).HasColumnType("text");
+
+                entity.Property(e => e.CustomerType).HasColumnType("text");
+            });
+
+            modelBuilder.Entity<Warehouses>(entity =>
+            {
+                entity.HasKey(e => e.WarehouseId)
+                    .HasName("PK__Warehous__2608AFF950B86A85");
+
+                entity.Property(e => e.WarehouseId).ValueGeneratedNever();
+
+                entity.Property(e => e.WarehouseName).HasColumnType("text");
+            });
+
             modelBuilder.Entity<Distributor>(entity =>
             {
                 entity.HasKey(e => e.DistributorId)
@@ -113,13 +136,13 @@ namespace ProductApp.Models
                     .HasMaxLength(200)
                     .IsUnicode(false);
             });
-
             modelBuilder.Entity<InvoiceProduct>(entity =>
             {
                 entity.HasKey(e => e.Sku)
                     .HasName("PK__InvoiceP__CA1FD3C4DF245E19");
 
                 entity.Property(e => e.Sku)
+                .ValueGeneratedOnAdd()
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
@@ -149,6 +172,7 @@ namespace ProductApp.Models
                     .HasMaxLength(200)
                     .IsUnicode(false);
             });
+
 
             OnModelCreatingPartial(modelBuilder);
         }

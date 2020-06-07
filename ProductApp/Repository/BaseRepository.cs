@@ -37,7 +37,7 @@ namespace ProductApp.Repository
             return dbSet.Find(id);
         }
 
-        public void Insert(T entity)
+        public void Add(T entity)
         {
             dbSet.Add(entity);
         }

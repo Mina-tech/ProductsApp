@@ -11,17 +11,55 @@ export class InvoiceProduct extends Component {
             sku: '',
             productName: '',
             distributorName: '',
-            qty: '',
-            discount: '',
-            grossPrice: '',
+            qty: Number,
+            discount: Number,
+            grossPrice: Number
         }
+      
     }
 
+    
+
     handleChange = (e) => {
+        let val = e.target.value
+        if (e.target.name == 'qty' || e.target.name == 'discount' || e.target.name == 'grossPrice') {
+            val = parseInt(e.target.value);
+        }
+        console.log(typeof val);
         this.setState({
-            [e.target.name]: e.target.value
+            [e.target.name]: val
         });
 
+    }
+    
+    handleSubmit=(e)=> {
+        e.preventDefault();
+        const invoiceProduct = {
+            Sku: this.state.sku,
+            ProductName: this.state.productName,
+            DistributorName: this.state.distributorName,
+            Qty: this.state.qty,
+            GrossPrice: this.state.grossPrice,
+            Discount: this.state.discount
+        };
+        console.log(invoiceProduct);
+       fetch('/Home/InsertInvoiceProduct', {
+            method: 'POST',
+           headers: {
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+           },
+           body: JSON.stringify(invoiceProduct)
+           
+       })
+        .then(res => {
+            console.log(res);
+          
+       })
+       .catch(err => console.log("api Erorr: ", err));
+
+       
+         
     }
 
     componentDidMount() {
@@ -145,13 +183,13 @@ export class InvoiceProduct extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.handleChange);
+            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.handleChange, this.handleSubmit);
 
         return (
             <div>
                 <p>InvoiceProduct</p>
                 {contents}
-                <table className='table table-striped' aria-labelledby="tabelLabel">
+                <table className='table table-striped' aria-labelledby="tabelLabel" >
                     <thead>
                         <tr>
                             <th>Interna šifra</th>
@@ -173,6 +211,7 @@ export class InvoiceProduct extends Component {
                         </tr>
                     </tbody>
                 </table>
+                <button onClick={this.handleSubmit} type ="Submit">Dodaj Profakturu</button>
             </div>
         );
         
