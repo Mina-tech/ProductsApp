@@ -18,8 +18,8 @@ namespace ProductApp.Models
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<InvoiceProduct> InvoiceProducts { get; set; }
-        public virtual DbSet<Customers> Customers { get; set; }
-        public virtual DbSet<Warehouses> Warehouses { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Warehouse> Warehouses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,7 +32,7 @@ namespace ProductApp.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customers>(entity =>
+            modelBuilder.Entity<Customer>(entity =>
             {
                 entity.HasKey(e => e.CustomerId)
                     .HasName("PK__Customer__A4AE64D8EA36923E");
@@ -44,7 +44,7 @@ namespace ProductApp.Models
                 entity.Property(e => e.CustomerType).HasColumnType("text");
             });
 
-            modelBuilder.Entity<Warehouses>(entity =>
+            modelBuilder.Entity<Warehouse>(entity =>
             {
                 entity.HasKey(e => e.WarehouseId)
                     .HasName("PK__Warehous__2608AFF950B86A85");

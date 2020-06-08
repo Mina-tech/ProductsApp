@@ -32,5 +32,13 @@ namespace ProductApp.Controllers
         {
             return _invoiceRepository.GetById(id);
         }
+
+        [HttpGet]
+      public List<Invoice> FilterDate(DateTime? date)
+        {
+            return _invoiceRepository.FilterInvoices(date);
+
+        }
     }
+
 }

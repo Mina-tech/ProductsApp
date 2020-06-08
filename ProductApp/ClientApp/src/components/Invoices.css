@@ -52,3 +52,37 @@ li.textarea-list-item {
     li.textarea-list-item textarea {
         border: 2px solid gray;
     }
+
+    .chosen-option {
+        display: inline-block;
+        padding: 5px;
+    }
+
+        .chosen-option ~ a {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+            .chosen-option ~ a button:hover {
+                background-color: darkgray;
+            }
+
+    .chosen-option ~ a button {
+        background-color: lightgray;
+        padding: 2px 4px;
+    }
+
+    .select-option {
+        position: relative;
+    }
+
+    li.field-wrapper {
+        border: none;
+    }
+
+.value-div {
+    padding: 5px;
+    border: 2px solid gray;
+}

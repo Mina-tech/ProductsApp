@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
 import './Invoices.css';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 export class Invoice extends Component {
     static displayName = Invoice.name;
@@ -10,17 +9,14 @@ export class Invoice extends Component {
         this.state = {
             singleInvoice: {}, 
             loading: true,
-            invoiceId: this.props.location.state,
+            invoiceId: this.props.location.state
            
         }
     }
     
     componentDidMount() {
-        this.GetSingleInvoice();
-        
+        this.GetSingleInvoice();   
     }
-
-
 
     static getSingleInvoice(singleInvoice) {
        
@@ -28,13 +24,15 @@ export class Invoice extends Component {
             <div>
                 <ul className="invoice">
                   
-                   <li>
-                        <div>Interna šifra:</div>
-                        {singleInvoice.invoiceId} 
-                    </li> 
-                    <li>
-                        {singleInvoice.invoiceType} </li>
-                    <li>{new Date(singleInvoice.invoiceDate).getMonth()}/{new Date(singleInvoice.invoiceDeliveryDate).getDate()}/{new Date(singleInvoice.invoiceDeliveryDate).getFullYear()}</li>
+                   <li className='field-wrapper'>
+                        <div className='label-div'>Interna šifra:</div>
+                        <div className='value-div'>{singleInvoice.invoiceId}</div>
+                    </li>
+                    <li className='field-wrapper'>
+                        <div className='label-div'>Tip profakture:</div>
+                        <div className='value-div'>{singleInvoice.invoiceType}</div>
+                    </li>
+                    <li>{new Date(singleInvoice.invoiceDate).getMonth()}/{new Date(singleInvoice.invoiceDate).getDate()}/{new Date(singleInvoice.invoiceDate).getFullYear()}</li>
                     <li>{singleInvoice.products} </li>
                     <li>{singleInvoice.distributorId} </li>
                     <li>{singleInvoice.address} </li>

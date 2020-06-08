@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import './Invoices.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import ReactDOM from "react-dom";
+import { Invoice} from './Invoice';
 
 export class Invoices extends Component {
     static displayName = Invoices.name;
@@ -72,7 +73,7 @@ export class Invoices extends Component {
             ? <p><em>Loading...</em></p>
             : Invoices.InvoiceList(this.state.invoiceList, this.state);*/
         return (
-            
+           
             <div>
               <p>Lista profaktura</p>
                
@@ -96,22 +97,26 @@ export class Invoices extends Component {
                             )}
                         </datalist>
                     </li>
+                   
                     {invoiceList.map(listItem =>
-                        <li>{listItem.invoiceId}{listItem.invoiceType}
+                        <li className="select-option">
+                            <div className="chosen-option">{listItem.invoiceId} - {listItem.invoiceType}</div>
                             <Link
                                 to={{
-                                    pathname: `/Invoice/GetInvoice/`+ listItem.invoiceId,
-                                    state: listItem.invoiceId 
+                                    pathname: `/Invoice/GetInvoice/${listItem.invoiceId}`,
+                                    state: listItem.invoiceId,
+                                    component:{ Invoice }
                                 }}
-                                >
+                            >
                                 <Button>Select</Button>
-                                </Link>
-                                </li>
-                    )}
+                            </Link>
+                        </li>
+                    )} 
 
 
                 </ul>
-            </div>
+                </div>
+            
         );
     }
 
