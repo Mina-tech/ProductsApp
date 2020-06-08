@@ -15,10 +15,7 @@ export class InvoiceProduct extends Component {
             discount: Number,
             grossPrice: Number
         }
-      
     }
-
-    
 
     handleChange = (e) => {
         let val = e.target.value
@@ -29,10 +26,9 @@ export class InvoiceProduct extends Component {
         this.setState({
             [e.target.name]: val
         });
-
     }
-    
-    handleSubmit=(e)=> {
+
+    handleSubmit = (e) => {
         e.preventDefault();
         const invoiceProduct = {
             Sku: this.state.sku,
@@ -43,23 +39,18 @@ export class InvoiceProduct extends Component {
             Discount: this.state.discount
         };
         console.log(invoiceProduct);
-       fetch('/Home/InsertInvoiceProduct', {
+        fetch('/Home/InsertInvoiceProduct', {
             method: 'POST',
-           headers: {
-               'Accept': 'application/json',
-               'Content-Type': 'application/json',
-           },
-           body: JSON.stringify(invoiceProduct)
-           
-       })
-        .then(res => {
-            console.log(res);
-          
-       })
-       .catch(err => console.log("api Erorr: ", err));
-
-       
-         
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(invoiceProduct)
+        })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => console.log("api Erorr: ", err));
     }
 
     componentDidMount() {
@@ -174,8 +165,8 @@ export class InvoiceProduct extends Component {
                             )}
                         </datalist>
                     </li>
-                    </ul>
-                        </div>
+                </ul>
+            </div>
 
         );
     }
@@ -211,10 +202,9 @@ export class InvoiceProduct extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <button onClick={this.handleSubmit} type ="Submit">Dodaj Profakturu</button>
+                <button onClick={this.handleSubmit} type="Submit">Dodaj Profakturu</button>
             </div>
         );
-        
     }
 
     async GetInvoiceProduct() {

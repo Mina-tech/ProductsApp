@@ -7,7 +7,7 @@ namespace ProductApp.Models
     {
         public int InvoiceId { get; set; }
         public DateTime? InvoiceDate { get; set; }
-        public string Products { get; set; }
+        public string ProductName { get; set; }
         public int? DistributorId { get; set; }
         public string Address { get; set; }
         public string City { get; set; }

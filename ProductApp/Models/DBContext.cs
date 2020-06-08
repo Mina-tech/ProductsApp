@@ -107,7 +107,7 @@ namespace ProductApp.Models
 
                 entity.Property(e => e.PlaceOfDelivery).HasColumnType("text");
 
-                entity.Property(e => e.Products)
+                entity.Property(e => e.ProductName)
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
