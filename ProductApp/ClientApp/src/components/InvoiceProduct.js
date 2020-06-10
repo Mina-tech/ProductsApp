@@ -13,7 +13,11 @@ export class InvoiceProduct extends Component {
             distributorName: '',
             qty: Number,
             discount: Number,
-            grossPrice: Number
+            grossPrice: Number,
+            rows: [],
+            filterProduct:''
+            
+            
         }
     }
 
@@ -22,12 +26,20 @@ export class InvoiceProduct extends Component {
         if (e.target.name == 'qty' || e.target.name == 'discount' || e.target.name == 'grossPrice') {
             val = parseInt(e.target.value);
         }
-        console.log(typeof val);
+        let invoiceProduct = this.state.invoiceProduct.slice();
+        if (e.target.name == 'productName') 
+             {
+                invoiceProduct = invoiceProduct.filter(listItem => listItem.productName.toLowerCase() === this.state.filterProduct.toLowerCase());
+            }
+        
+      
         this.setState({
-            [e.target.name]: val
+            [e.target.name]: val,
+            filterProduct : this.state.filterProduct
         });
     }
-
+   
+    
     handleSubmit = (e) => {
         e.preventDefault();
         const invoiceProduct = {
@@ -49,15 +61,39 @@ export class InvoiceProduct extends Component {
         })
             .then(res => {
                 console.log(res);
+                window.alert('Profaktura je uspešno dodata!');
             })
+            
+
             .catch(err => console.log("api Erorr: ", err));
     }
 
+    handleAddRow = ()=> {
+        var newData = {
+            sku: this.state.sku,
+            productName: this.state.productName,
+            distributorName: this.state.distributorName,
+            qty: this.state.qty,
+            grossPrice: this.state.grossPrice,
+            discount: this.state.discount
+        }
+        this.setState({ rows: [...this.state.rows, newData] });
+        
+    }
+   
+
+    handleDeleteRow =(index)=> {
+        this.setState({
+            rows: this.state.rows.slice(index, 0)
+        });
+    };
+
     componentDidMount() {
+        document.title = 'Unos Profaktura';
         this.GetInvoiceProduct();
     }
 
-    static getInvoiceProduct(invoiceProducts, sku, productName, distributorName, qty, grossPrice, discount, handleChange) {
+    static getInvoiceProduct(invoiceProducts, sku, productName, distributorName, qty, grossPrice, discount, handleChange, filterProduct, handleSelect ) {
         return (
             <div className="container">
                 <ul className="invoice">
@@ -172,15 +208,17 @@ export class InvoiceProduct extends Component {
     }
 
     render() {
+       
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.handleChange, this.handleSubmit);
+            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.handleChange, this.handleSubmit, this.handleAddRow, this.handleDeleteRow, this.state.rows, this.handleSelect);
 
         return (
             <div>
                 <p>InvoiceProduct</p>
                 {contents}
                 <table className='table table-striped' aria-labelledby="tabelLabel" >
+                    
                     <thead>
                         <tr>
                             <th>Interna šifra</th>
@@ -191,18 +229,27 @@ export class InvoiceProduct extends Component {
                             <th>Rabat</th>
                         </tr>
                     </thead>
+                   
                     <tbody>
-                        <tr>
-                            <td>{this.state.sku}</td>
-                            <td>{this.state.productName}</td>
-                            <td>{this.state.distributorName}</td>
-                            <td>{this.state.qty}</td>
-                            <td>{this.state.grossPrice}</td>
-                            <td>{this.state.discount}</td>
-                        </tr>
-                    </tbody>
+                        {this.state.rows.map((r, index) =>
+                            <tr key={r.index}>
+                                <td>{r.sku}</td> 
+                                <td>{r.productName}</td> 
+                                <td>{r.distributorName}</td>
+                                <td>{r.qty}</td>
+                                <td>{r.grossPrice}</td>
+                                <td>{r.discount}</td>
+                                <td><button onClick={(event) =>this.handleDeleteRow(event, r, index)} type="Submit">Obriši artikal</button></td>
+                            </tr>
+                
+                        )}
+                        </tbody>
                 </table>
                 <button onClick={this.handleSubmit} type="Submit">Dodaj Profakturu</button>
+
+                <button onClick={this.handleAddRow} type="Submit">Dodaj artikal</button>
+
+                
             </div>
         );
     }

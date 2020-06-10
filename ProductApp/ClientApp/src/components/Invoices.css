@@ -86,3 +86,8 @@ li.textarea-list-item {
     padding: 5px;
     border: 2px solid gray;
 }
+[type='Submit'] {
+    background-color: lightgray;
+    padding: 2px 4px;
+    margin: 5px;
+}

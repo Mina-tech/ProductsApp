@@ -48,7 +48,7 @@ export class Invoices extends Component {
             <div>
                 <p>Lista profaktura</p>
                 <ul className="invoice">
-                    <li>  <input list="invoiceType" placeholder="Tip profakture" onChange={this.changeFilterType} value={this.state.filterType} />
+                    <li>  <input list="invoiceType" name = "invoiceType" placeholder="Tip profakture" onChange={this.changeFilterType} value={this.state.filterType} />
                         <datalist id="invoiceType">
                             {invoiceList.map(listItem =>
                                 <option>{listItem.invoiceType}</option>
