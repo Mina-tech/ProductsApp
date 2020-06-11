@@ -5,6 +5,11 @@ namespace ProductApp.Models
 {
     public class Invoice
     {
+        public Invoice()
+        {
+            InvoiceProducts = new HashSet<InvoiceProduct>();
+        }
+
         public int InvoiceId { get; set; }
         public DateTime? InvoiceDate { get; set; }
         public string ProductName { get; set; }
@@ -26,5 +31,6 @@ namespace ProductApp.Models
         public string InvoiceType { get; set; }
 
         public virtual Distributor Distributor { get; set; }
+        public virtual ICollection<InvoiceProduct> InvoiceProducts { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ProductApp.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductApp.Interfaces;
 using ProductApp.Models;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,12 @@ namespace ProductApp.Repository
             context.InvoiceProducts.Add(invoiceProduct);
             
         }
-
+       
         public void Save()
         {
             context.SaveChanges();
         }
+
+        
     }
 }

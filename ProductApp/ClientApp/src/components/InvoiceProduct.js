@@ -15,7 +15,7 @@ export class InvoiceProduct extends Component {
             discount: Number,
             grossPrice: Number,
             rows: [],
-            filterProduct:''
+            filterProductName:''
             
             
         }
@@ -26,16 +26,34 @@ export class InvoiceProduct extends Component {
         if (e.target.name == 'qty' || e.target.name == 'discount' || e.target.name == 'grossPrice') {
             val = parseInt(e.target.value);
         }
-        let invoiceProduct = this.state.invoiceProduct.slice();
-        if (e.target.name == 'productName') 
-             {
-                invoiceProduct = invoiceProduct.filter(listItem => listItem.productName.toLowerCase() === this.state.filterProduct.toLowerCase());
-            }
-        
+        if (e.target.name == 'productName') {
+            this.setState({
+                filterProductName: val
+            });
+            let self = this;
+            setTimeout(function () {
+
+                let invoiceProduct = self.state.invoiceProduct.slice();
+                invoiceProduct = invoiceProduct.filter(listItem => listItem.productName.toLowerCase() === self.state.filterProductName.toLowerCase());
+                console.log(invoiceProduct);
+                self.setState({
+                    sku : invoiceProduct[0].sku,
+                    qty: invoiceProduct[0].qty,
+                    distributorName: invoiceProduct[0].distributorName,
+                    discount: invoiceProduct[0].discount,
+                    grossPrice: invoiceProduct[0].grossPrice
+                   
+                });
+               
+
+            }, 500);
+        }
+      
+    
       
         this.setState({
-            [e.target.name]: val,
-            filterProduct : this.state.filterProduct
+            [e.target.name]: val
+           
         });
     }
    
@@ -78,7 +96,12 @@ export class InvoiceProduct extends Component {
             discount: this.state.discount
         }
         this.setState({ rows: [...this.state.rows, newData] });
-        
+        this.state.sku = '';
+        this.state.productName = '';
+        this.state.distributorName = '';
+        this.state.qty = Number;
+        this.state.grossPrice = Number;
+        this.state.discount = Number;
     }
    
 
@@ -93,7 +116,7 @@ export class InvoiceProduct extends Component {
         this.GetInvoiceProduct();
     }
 
-    static getInvoiceProduct(invoiceProducts, sku, productName, distributorName, qty, grossPrice, discount, handleChange, filterProduct, handleSelect ) {
+    static getInvoiceProduct(invoiceProducts, sku, productName, distributorName, qty, grossPrice, discount, handleChange ) {
         return (
             <div className="container">
                 <ul className="invoice">
@@ -211,11 +234,11 @@ export class InvoiceProduct extends Component {
        
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.handleChange, this.handleSubmit, this.handleAddRow, this.handleDeleteRow, this.state.rows, this.handleSelect);
+            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.handleChange);
 
         return (
             <div>
-                <p>InvoiceProduct</p>
+                <p>Unos Profaktura</p>
                 {contents}
                 <table className='table table-striped' aria-labelledby="tabelLabel" >
                     
@@ -258,5 +281,6 @@ export class InvoiceProduct extends Component {
         const response = await fetch('/Home/GetAllInvoiceProducts');
         const data = await response.json();
         this.setState({ invoiceProduct: data, loading: false });
+        console.log(this.state.invoiceProduct);
     }
 }

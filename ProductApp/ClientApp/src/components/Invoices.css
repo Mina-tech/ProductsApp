@@ -91,3 +91,8 @@ li.textarea-list-item {
     padding: 2px 4px;
     margin: 5px;
 }
+
+input[name=searchField] {
+    margin: 5px;
+    border: 2px solid gray;
+}

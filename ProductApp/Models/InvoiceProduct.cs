@@ -17,6 +17,13 @@ namespace ProductApp.Models
         public string UnitOfMeasure { get; set; }
         public decimal? GrossWeight { get; set; }
         public decimal? NetWeight { get; set; }
-        public string WarehouseId { get; set; }
+        public int WarehouseId { get; set; }
+        public int ProductId { get; set; }
+        public int InvoiceId { get; set; }
+
+        public virtual Distributor Distributor { get; set; }
+        public virtual Product Product{ get; set; }
+        public virtual Invoice Invoice { get; set; }
+        public virtual Warehouse Warehouse { get; set; }
     }
 }

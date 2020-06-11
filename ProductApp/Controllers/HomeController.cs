@@ -6,6 +6,7 @@ using ProductApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProductApp.Controllers
@@ -16,17 +17,22 @@ namespace ProductApp.Controllers
         private readonly IDistributorRepository _distributorRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IInvoiceProductRepository _invoiceProductRepository;
+        private readonly IWarehouseRepository _warehouseRepository;
 
         public HomeController(
             IProductRepository productRepository,
             IDistributorRepository distributorRepository,
             IInvoiceRepository invoiceRepository,
-            IInvoiceProductRepository invoiceProductRepository)
+            IInvoiceProductRepository invoiceProductRepository,
+            IWarehouseRepository warehouseRepository
+
+            )
         {
             this._productRepository = productRepository;
             this._distributorRepository = distributorRepository;
             this._invoiceRepository = invoiceRepository;
             this._invoiceProductRepository = invoiceProductRepository;
+            this._warehouseRepository = warehouseRepository;
         }
 
 
@@ -62,7 +68,7 @@ namespace ProductApp.Controllers
         }
 
         [HttpPost]
-        public static void UpdateDistributor( int id, string name, int qty)
+        public static void UpdateDistributor(int id, string name, int qty)
         {
             Distributor distributor = new Distributor() { DistributorId = id, DistributorName = name, Qty = qty };
 
@@ -73,9 +79,9 @@ namespace ProductApp.Controllers
                 context.Entry(distributor).Property(p => p.Qty).IsModified = true;
                 context.SaveChanges();
 
-                
+
             }
-       
+
         }
 
 
@@ -99,31 +105,47 @@ namespace ProductApp.Controllers
             return _invoiceProductRepository.GetAll();
 
 
-
         }
+
         [Route("/Home/InsertInvoiceProduct")]
         [HttpPost]
-         public InvoiceProduct InsertInvoiceProduct([FromBody]InvoiceProduct invoiceProduct)
-         {
-          
+        public InvoiceProduct InsertInvoiceProduct([FromBody]InvoiceProduct invoiceProduct)
+        {
+
             InvoiceProduct insertInvoice = new InvoiceProduct();
-           
-            
-                insertInvoice.Sku = invoiceProduct.Sku;
-                insertInvoice.ProductName = invoiceProduct.ProductName;
-                insertInvoice.DistributorName = invoiceProduct.DistributorName;
-                insertInvoice.GrossPrice = invoiceProduct.GrossPrice;
-                insertInvoice.Qty = invoiceProduct.Qty;
-                insertInvoice.Discount = invoiceProduct.Discount;
 
-                _invoiceProductRepository.Add(insertInvoice);
-                _invoiceProductRepository.Save();
-                return insertInvoice;
-            
 
-         }
-          
-         
+            insertInvoice.Sku = invoiceProduct.Sku;
+            insertInvoice.ProductName = invoiceProduct.ProductName;
+            insertInvoice.DistributorName = invoiceProduct.DistributorName;
+            insertInvoice.GrossPrice = invoiceProduct.GrossPrice;
+            insertInvoice.Qty = invoiceProduct.Qty;
+            insertInvoice.Discount = invoiceProduct.Discount;
+
+            _invoiceProductRepository.Add(insertInvoice);
+            _invoiceProductRepository.Save();
+            return insertInvoice;
+
 
         }
+        [HttpGet]
+
+        public IQueryable GetJoined()
+        {
+            var data1 = _invoiceProductRepository.GetAll();
+            var data2 = _invoiceRepository.GetAll();
+            var res = (from x in data1
+                       join y in data2
+                       on x.InvoiceId equals y.InvoiceId
+                       select new
+                       {
+                           x.DistributorName
+
+                       }).AsQueryable();
+            
+           
+            return res;
+           
+        }
+    }
 }

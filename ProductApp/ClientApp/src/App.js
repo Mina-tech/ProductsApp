@@ -8,6 +8,7 @@ import { HelloWorld } from './components/HelloWorld';
 import { Invoice } from './components/Invoice';
 import { InvoiceProduct } from './components/InvoiceProduct';
 import { Invoices } from './components/Invoices';
+import { Storehouse } from './components/Storehouse';
 
 import './custom.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,6 +27,7 @@ export default class App extends Component {
             <Route path='/invoice' component={Invoice}/>
             <Route path='/invoiceProduct' component={InvoiceProduct} />
             <Route path='/invoices' component={Invoices} />
+            <Route path='/storehouse' component={Storehouse} />
       </Layout>
     );
   }

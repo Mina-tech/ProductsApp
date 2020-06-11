@@ -11,5 +11,10 @@ namespace ProductApp.Interfaces
     {
         void InsertInvoiceProduct(InvoiceProduct invoiceProduct);
         void Save();
+
+        
+
+
+
     }
 }

@@ -47,5 +47,17 @@ namespace ProductApp.Repository
             dbSet.Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
         }
-    }
+
+       /* public IEnumerable<T> Query()
+        {
+            IQueryable<T>
+            query = dbSet;
+            return query.ToList();
+        }*/
+         public IQueryable AsQueryable()
+        {
+            IQueryable<T> query = dbSet;
+            return query;
+        }
+}
 }

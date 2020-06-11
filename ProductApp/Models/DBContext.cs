@@ -168,9 +168,32 @@ namespace ProductApp.Models
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-                entity.Property(e => e.WarehouseId)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
+
+            /*    entity.HasOne(d => d.Distributor)
+                   .WithMany(p => p.InvoiceProducts)
+                   .HasForeignKey(d => d.DistributorId)
+                   .HasConstraintName("FK__InvoicePr__Distr__398D8EEE");
+
+                entity.HasOne(d => d.Product)
+                  .WithMany(p => p.InvoiceProducts)
+                  .HasForeignKey(d => d.ProductId)
+                  .HasConstraintName("FK__InvoicePr__Produ__5EBF139D");
+
+               /* entity.HasOne(d => d.Warehouse)
+                  .WithMany(p => p.InvoiceProducts)
+                  .HasForeignKey(d => d.WarehouseId)
+                  .HasConstraintName("FK__InvoicePr__Wareh__5CD6CB2B");*/
+
+                  entity.HasOne(d => d.Invoice)
+                  .WithMany(p => p.InvoiceProducts)
+                  .HasForeignKey(d => d.InvoiceId)
+                  .HasConstraintName("FK__InvoicePr__Invoi__5FB337D6");
+
+
+
+
+
+
             });
 
 

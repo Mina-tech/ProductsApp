@@ -8,6 +8,8 @@ namespace ProductApp.Models
         public Distributor()
         {
             Invoices = new HashSet<Invoice>();
+            InvoiceProducts = new HashSet<InvoiceProduct>();
+
         }
 
         public int DistributorId { get; set; }
@@ -15,5 +17,6 @@ namespace ProductApp.Models
         public int? Qty { get; set; }
 
         public virtual ICollection<Invoice> Invoices { get; set; }
+        public virtual ICollection<InvoiceProduct> InvoiceProducts { get; set; }
     }
 }
