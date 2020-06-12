@@ -7,16 +7,13 @@ namespace ProductApp.Models
     {
         public Distributor()
         {
-            Invoices = new HashSet<Invoice>();
-            InvoiceProducts = new HashSet<InvoiceProduct>();
-
+            Invoice = new HashSet<Invoice>();
         }
 
         public int DistributorId { get; set; }
         public string DistributorName { get; set; }
         public int? Qty { get; set; }
 
-        public virtual ICollection<Invoice> Invoices { get; set; }
-        public virtual ICollection<InvoiceProduct> InvoiceProducts { get; set; }
+        public virtual ICollection<Invoice> Invoice { get; set; }
     }
 }

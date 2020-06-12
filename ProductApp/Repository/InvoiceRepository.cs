@@ -1,4 +1,5 @@
-﻿using ProductApp.Models;
+﻿using ProductApp.Interfaces;
+using ProductApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace ProductApp.Repository
 
         public List<Invoice> FilterInvoices(DateTime? date)
         {
-            return context.Invoices
+            return context.Invoice
                 .Where(w => w.InvoiceDate >= date)
                 .ToList();
         }

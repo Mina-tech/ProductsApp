@@ -1,5 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './Invoices.css';
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { Invoice } from './Invoice';
 
 export class InvoiceProduct extends Component {
     static displayName = InvoiceProduct.name;
@@ -14,6 +16,7 @@ export class InvoiceProduct extends Component {
             qty: Number,
             discount: Number,
             grossPrice: Number,
+            invoiceType:'',
             rows: [],
             filterProductName:''
             
@@ -21,6 +24,7 @@ export class InvoiceProduct extends Component {
         }
     }
 
+ 
     handleChange = (e) => {
         let val = e.target.value
         if (e.target.name == 'qty' || e.target.name == 'discount' || e.target.name == 'grossPrice') {
@@ -38,11 +42,11 @@ export class InvoiceProduct extends Component {
                 console.log(invoiceProduct);
                 self.setState({
                     sku : invoiceProduct[0].sku,
-                    qty: invoiceProduct[0].qty,
+                   // qty: invoiceProduct[0].qty,
                     distributorName: invoiceProduct[0].distributorName,
-                    discount: invoiceProduct[0].discount,
-                    grossPrice: invoiceProduct[0].grossPrice
-                   
+                   // discount: invoiceProduct[0].discount,
+                    grossPrice: invoiceProduct[0].grossPrice,
+                    currency: invoiceProduct[0].currency
                 });
                
 
@@ -56,9 +60,10 @@ export class InvoiceProduct extends Component {
            
         });
     }
-   
+
+
     
-    handleSubmit = (e) => {
+   handleSubmit = (e) => {
         e.preventDefault();
         const invoiceProduct = {
             Sku: this.state.sku,
@@ -66,10 +71,11 @@ export class InvoiceProduct extends Component {
             DistributorName: this.state.distributorName,
             Qty: this.state.qty,
             GrossPrice: this.state.grossPrice,
-            Discount: this.state.discount
+            Discount: this.state.discount,
+            InvoiceType: this.state.invoiceType
         };
-        console.log(invoiceProduct);
-        fetch('/Home/InsertInvoiceProduct', {
+        //console.log(this.state.invoice);
+        fetch('/Home/InsertInvoiceView', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -93,7 +99,8 @@ export class InvoiceProduct extends Component {
             distributorName: this.state.distributorName,
             qty: this.state.qty,
             grossPrice: this.state.grossPrice,
-            discount: this.state.discount
+            discount: this.state.discount,
+            currency : this.state.currency
         }
         this.setState({ rows: [...this.state.rows, newData] });
         this.state.sku = '';
@@ -102,12 +109,13 @@ export class InvoiceProduct extends Component {
         this.state.qty = Number;
         this.state.grossPrice = Number;
         this.state.discount = Number;
+        this.state.currency = '';
     }
    
 
     handleDeleteRow =(index)=> {
         this.setState({
-            rows: this.state.rows.slice(index, 0)
+            rows: this.state.rows.slice(index, -1)
         });
     };
 
@@ -116,7 +124,7 @@ export class InvoiceProduct extends Component {
         this.GetInvoiceProduct();
     }
 
-    static getInvoiceProduct(invoiceProducts, sku, productName, distributorName, qty, grossPrice, discount, handleChange ) {
+    static getInvoiceProduct(invoiceProducts,invoicetype, sku, productName, distributorName, qty, grossPrice, discount, currency, handleChange ) {
         return (
             <div className="container">
                 <ul className="invoice">
@@ -144,6 +152,9 @@ export class InvoiceProduct extends Component {
                             )}
                         </datalist>
                     </li>
+                    
+                    
+                   
                     <li>
                         <input list="distributorId" placeholder="Interna šifra dobavljača" />
                         <datalist id="distributorId">
@@ -177,6 +188,14 @@ export class InvoiceProduct extends Component {
                         </datalist>
                     </li>
                     <li>
+                        <input list="currency" placeholder="Valuta" value={currency} onChange={handleChange.bind(this)} />
+                        <datalist id="currency">
+                            {invoiceProducts.map(invoiceProduct =>
+                                <option>{invoiceProduct.currency}</option>
+                            )}
+                        </datalist>
+                    </li>
+                    <li>
                         <input list="netPrice" placeholder="Neto cena" />
                         <datalist id="netPrice">
                             {invoiceProducts.map(invoiceProduct =>
@@ -184,14 +203,7 @@ export class InvoiceProduct extends Component {
                             )}
                         </datalist>
                     </li>
-                    <li>
-                        <input list="currency" placeholder="Valuta" />
-                        <datalist id="currency">
-                            {invoiceProducts.map(invoiceProduct =>
-                                <option>{invoiceProduct.currency}</option>
-                            )}
-                        </datalist>
-                    </li>
+         
                     <li>
                         <input list="unitOfMeasure" placeholder="Jedinica mere" />
                         <datalist id="unitOfMeasure">
@@ -224,6 +236,7 @@ export class InvoiceProduct extends Component {
                             )}
                         </datalist>
                     </li>
+                   
                 </ul>
             </div>
 
@@ -231,14 +244,14 @@ export class InvoiceProduct extends Component {
     }
 
     render() {
-       
+      
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.handleChange);
+            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.invoiceType, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.state.currency, this.handleChange);
 
         return (
             <div>
-                <p>Unos Profaktura</p>
+                <p>Unos profaktura:</p>
                 {contents}
                 <table className='table table-striped' aria-labelledby="tabelLabel" >
                     
@@ -260,7 +273,7 @@ export class InvoiceProduct extends Component {
                                 <td>{r.productName}</td> 
                                 <td>{r.distributorName}</td>
                                 <td>{r.qty}</td>
-                                <td>{r.grossPrice}</td>
+                                <td>{r.grossPrice} {r.currency}</td>
                                 <td>{r.discount}</td>
                                 <td><button onClick={(event) =>this.handleDeleteRow(event, r, index)} type="Submit">Obriši artikal</button></td>
                             </tr>
@@ -268,10 +281,11 @@ export class InvoiceProduct extends Component {
                         )}
                         </tbody>
                 </table>
-                <button onClick={this.handleSubmit} type="Submit">Dodaj Profakturu</button>
+               
 
                 <button onClick={this.handleAddRow} type="Submit">Dodaj artikal</button>
 
+                <button onClick={this.handleSubmit} type ="Submit">Dodaj profakturu</button>
                 
             </div>
         );
@@ -280,7 +294,8 @@ export class InvoiceProduct extends Component {
     async GetInvoiceProduct() {
         const response = await fetch('/Home/GetAllInvoiceProducts');
         const data = await response.json();
+        console.log(data);
         this.setState({ invoiceProduct: data, loading: false });
-        console.log(this.state.invoiceProduct);
+        
     }
 }

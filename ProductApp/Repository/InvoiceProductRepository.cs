@@ -16,16 +16,20 @@ namespace ProductApp.Repository
 
         }
 
+        public List<InvoiceProduct> GetProductsByInvoiceId(int invoiceId)
+        {
+           return context.InvoiceProduct
+                .Where(w => w.InvoiceId == invoiceId)
+                .ToList();
+        }
+
         public void InsertInvoiceProduct(InvoiceProduct invoiceProduct)
         {
-            context.InvoiceProducts.Add(invoiceProduct);
+            context.InvoiceProduct.Add(invoiceProduct);
             
         }
        
-        public void Save()
-        {
-            context.SaveChanges();
-        }
+      
 
         
     }

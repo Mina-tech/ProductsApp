@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProductApp.Models;
 using Microsoft.EntityFrameworkCore;
-
+using ProductApp.Interfaces;
 
 namespace ProductApp.Repository
 {
-    public class BaseRepository <T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected DBContext context;
         protected DbSet<T> dbSet;
@@ -37,9 +37,10 @@ namespace ProductApp.Repository
             return dbSet.Find(id);
         }
 
-        public void Add(T entity)
+        public int Add(T entity)
         {
             dbSet.Add(entity);
+            return context.SaveChanges();
         }
 
         public void Update(T entity)
@@ -48,16 +49,10 @@ namespace ProductApp.Repository
             context.Entry(entity).State = EntityState.Modified;
         }
 
-       /* public IEnumerable<T> Query()
+        public void Save()
         {
-            IQueryable<T>
-            query = dbSet;
-            return query.ToList();
-        }*/
-         public IQueryable AsQueryable()
-        {
-            IQueryable<T> query = dbSet;
-            return query;
+            context.SaveChanges();
         }
-}
+
+    }
 }

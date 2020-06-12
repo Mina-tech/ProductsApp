@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductApp.Interfaces;
 using ProductApp.Models;
 using ProductApp.Repository;
+using ProductApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -85,18 +86,6 @@ namespace ProductApp.Controllers
         }
 
 
-        [HttpGet]
-        public Invoice GetInvoice(int id)
-        {
-            return _invoiceRepository.GetById(id);
-        }
-
-        [HttpGet]
-        public IEnumerable<Invoice> GetAllInvoices()
-        {
-            return _invoiceRepository.GetAll();
-
-        }
 
         [HttpGet]
         public IEnumerable<InvoiceProduct> GetAllInvoiceProducts()
@@ -106,46 +95,6 @@ namespace ProductApp.Controllers
 
 
         }
-
-        [Route("/Home/InsertInvoiceProduct")]
-        [HttpPost]
-        public InvoiceProduct InsertInvoiceProduct([FromBody]InvoiceProduct invoiceProduct)
-        {
-
-            InvoiceProduct insertInvoice = new InvoiceProduct();
-
-
-            insertInvoice.Sku = invoiceProduct.Sku;
-            insertInvoice.ProductName = invoiceProduct.ProductName;
-            insertInvoice.DistributorName = invoiceProduct.DistributorName;
-            insertInvoice.GrossPrice = invoiceProduct.GrossPrice;
-            insertInvoice.Qty = invoiceProduct.Qty;
-            insertInvoice.Discount = invoiceProduct.Discount;
-
-            _invoiceProductRepository.Add(insertInvoice);
-            _invoiceProductRepository.Save();
-            return insertInvoice;
-
-
-        }
-        [HttpGet]
-
-        public IQueryable GetJoined()
-        {
-            var data1 = _invoiceProductRepository.GetAll();
-            var data2 = _invoiceRepository.GetAll();
-            var res = (from x in data1
-                       join y in data2
-                       on x.InvoiceId equals y.InvoiceId
-                       select new
-                       {
-                           x.DistributorName
-
-                       }).AsQueryable();
-            
-           
-            return res;
            
         }
     }
-}

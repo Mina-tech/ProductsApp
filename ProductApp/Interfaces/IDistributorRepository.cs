@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProductApp.Repository
+namespace ProductApp.Interfaces
 {
     public interface IDistributorRepository : IBaseRepository<Distributor>
     {

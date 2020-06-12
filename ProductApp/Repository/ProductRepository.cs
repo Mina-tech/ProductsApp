@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data.Entity;
-
+using ProductApp.Interfaces;
 
 namespace ProductApp
 {

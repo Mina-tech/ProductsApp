@@ -9,12 +9,9 @@ namespace ProductApp.Interfaces
 {
   public  interface IInvoiceProductRepository : IBaseRepository<InvoiceProduct>
     {
+        List<InvoiceProduct> GetProductsByInvoiceId(int invoiceId);
         void InsertInvoiceProduct(InvoiceProduct invoiceProduct);
-        void Save();
 
         
-
-
-
     }
 }

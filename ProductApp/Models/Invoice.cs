@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProductApp.Models
 {
-    public class Invoice
-    {
-        public Invoice()
-        {
-            InvoiceProducts = new HashSet<InvoiceProduct>();
-        }
+    public partial class Invoice
 
+    {   [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InvoiceId { get; set; }
         public DateTime? InvoiceDate { get; set; }
         public string ProductName { get; set; }
@@ -29,8 +28,5 @@ namespace ProductApp.Models
         public string MethodOfDelivery { get; set; }
         public string PlaceOfDelivery { get; set; }
         public string InvoiceType { get; set; }
-
-        public virtual Distributor Distributor { get; set; }
-        public virtual ICollection<InvoiceProduct> InvoiceProducts { get; set; }
     }
 }

@@ -7,36 +7,38 @@ export class Invoice extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            singleInvoice: {},
+           // invoice: [],
+            singleinvoice: {},
+            products:[],
             loading: true,
             invoiceId: this.props.location.state
         }
+
     }
+    
+
+   /* onHandleChange = (value) => {
+        var currentInvoice = this.state.invoice;
+        currentInvoice.quantity = value;
+    } */
 
     componentDidMount() {
         this.GetSingleInvoice();
     }
 
-    static getSingleInvoice(singleInvoice) {
+    static getSingleInvoice(singleInvoice, products) {
         return (
             <div>
                 <ul className="invoice">
 
-                    <li className='field-wrapper'>
-                        <div className='label-div'>Interna šifra:</div>
-                        <div className='value-div'>{singleInvoice.invoiceId}</div>
-                    </li>
+                   
                     <li className='field-wrapper'>
                         <div className='label-div'>Tip profakture:</div>
-                        <div className='value-div'>{singleInvoice.invoiceType}</div>
+                        <input className='value-div'type="text" defaultValue={singleInvoice.invoiceType}></input>
                     </li>
                     <li className='field-wrapper'>
                         <div className='label-div'>Datum profakture:</div>
                         <div className='value-div'>{new Date(singleInvoice.invoiceDate).getMonth()}/{new Date(singleInvoice.invoiceDate).getDate()}/{new Date(singleInvoice.invoiceDate).getFullYear()}</div>
-                    </li>
-                    <li className='field-wrapper'>
-                        <div className='label-div'>Artikli:</div>
-                        <div className='value-div'>singleInvoice.products}</div>
                     </li>
                     <li className='field-wrapper'>
                         <div className='label-div'>Dobavljač:</div>
@@ -93,7 +95,7 @@ export class Invoice extends Component {
                     <li className='field-wrapper'>
                         <div className='label-div'>Mesto isporuke:</div>
                         <div className='value-div'>{singleInvoice.placeOfDelivery}</div>
-                    </li>
+                  </li>
                 </ul>
             </div>
 
@@ -106,15 +108,44 @@ export class Invoice extends Component {
             : Invoice.getSingleInvoice(this.state.singleInvoice, this.state.invoiceId);
         return (
             <div>
-                <p>Invoice</p>
+                <p>Profaktura:</p>
                 {contents}
 
-            </div>
+            
+            <table className='table table-striped' aria-labelledby="tabelLabel" >
+
+                <thead>
+                    <tr>
+                        <th>Interna šifra</th>
+                        <th>Naziv artikla</th>
+                        <th>Proizvođač</th>
+                        <th>Količina</th>
+                        <th>Bruto cena artikla</th>
+                        <th>Rabat</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {this.state.products.map(r =>
+                        <tr key={r.index}>
+                            <td>{r.sku}</td>
+                            <td>{r.productName}</td>
+                            <td>{r.distributorName}</td>
+                            <td>{r.qty}</td>
+                            <td>{r.grossPrice} {r.currency}</td>
+                            <td>{r.discount}</td>
+                        </tr>
+
+                    )}
+                    </tbody>
+                </table>
+                    </div>
         );
     }
     async GetSingleInvoice() {
         const response = await fetch('/Invoice/GetInvoice/' + this.state.invoiceId);
         const data = await response.json();
-        this.setState({ singleInvoice: data, loading: false });
+        console.log(data);
+        this.setState({ /*invoice : data*/ singleInvoice: data.invoice, products: data.products, loading: false });
     }
 }

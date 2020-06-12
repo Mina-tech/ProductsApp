@@ -1,4 +1,5 @@
-﻿using ProductApp.Models;
+﻿using ProductApp.Interfaces;
+using ProductApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProductApp.Repository
+namespace ProductApp.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         T GetById(int id);
-        void Add(T entity);
+        int Add(T entity);
         void Update(T entity);
         void Delete(T entity);
-
-        
-       
+        void Save();
     }
 }

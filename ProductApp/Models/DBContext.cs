@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -14,12 +15,13 @@ namespace ProductApp.Models
             : base(options)
         {
         }
-        public virtual DbSet<Distributor> Distributors { get; set; }
-        public virtual DbSet<Invoice> Invoices { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<InvoiceProduct> InvoiceProducts { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<Warehouse> Warehouses { get; set; }
+
+        public virtual DbSet<Customer> Customer { get; set; }
+        public virtual DbSet<Distributor> Distributor { get; set; }
+        public virtual DbSet<Invoice> Invoice { get; set; }
+        public virtual DbSet<InvoiceProduct> InvoiceProduct { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Warehouse> Warehouse { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,9 +36,6 @@ namespace ProductApp.Models
         {
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.HasKey(e => e.CustomerId)
-                    .HasName("PK__Customer__A4AE64D8EA36923E");
-
                 entity.Property(e => e.CustomerId).ValueGeneratedNever();
 
                 entity.Property(e => e.CustomerName).HasColumnType("text");
@@ -44,21 +43,8 @@ namespace ProductApp.Models
                 entity.Property(e => e.CustomerType).HasColumnType("text");
             });
 
-            modelBuilder.Entity<Warehouse>(entity =>
-            {
-                entity.HasKey(e => e.WarehouseId)
-                    .HasName("PK__Warehous__2608AFF950B86A85");
-
-                entity.Property(e => e.WarehouseId).ValueGeneratedNever();
-
-                entity.Property(e => e.WarehouseName).HasColumnType("text");
-            });
-
             modelBuilder.Entity<Distributor>(entity =>
             {
-                entity.HasKey(e => e.DistributorId)
-                    .HasName("PK__Distribu__FD1AEB9E6FD78F2D");
-
                 entity.Property(e => e.DistributorId).ValueGeneratedNever();
 
                 entity.Property(e => e.DistributorName).HasColumnType("text");
@@ -67,9 +53,9 @@ namespace ProductApp.Models
             modelBuilder.Entity<Invoice>(entity =>
             {
                 entity.HasKey(e => e.InvoiceId)
-                    .HasName("PK__Invoices__D796AAB5116EEA6D");
-
-                entity.Property(e => e.InvoiceId).ValueGeneratedNever();
+                   .HasName("[PK__Invoices__D796AAB5116EEA6D]");
+                  
+                entity.Property(e => e.InvoiceId).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Address)
                     .HasMaxLength(200)
@@ -115,36 +101,24 @@ namespace ProductApp.Models
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.Distributor)
-                    .WithMany(p => p.Invoices)
-                    .HasForeignKey(d => d.DistributorId)
-                    .HasConstraintName("FK__Invoices__Distri__34C8D9D1");
+                //entity.HasOne(d => d.Distributor)
+                //    .WithMany(p => p.Invoice)
+                //    .HasForeignKey(d => d.DistributorId)
+                //    .HasConstraintName("FK__Invoices__Distri__34C8D9D1");
             });
 
-            modelBuilder.Entity<Product>(entity =>
-            {
-                entity.HasKey(e => e.ProductId)
-                    .HasName("PK__Products__B40CC6CD16ABAFCD");
-
-                entity.Property(e => e.ProductId).ValueGeneratedNever();
-
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.ProductName).HasColumnType("text");
-
-                entity.Property(e => e.Sku)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
-            });
             modelBuilder.Entity<InvoiceProduct>(entity =>
             {
-                entity.HasKey(e => e.Sku)
-                    .HasName("PK__InvoiceP__CA1FD3C4DF245E19");
+                entity.HasKey(e => e.InvoiceId)
+                    .HasName("PK_InvoiceProducts");
 
-                entity.Property(e => e.Sku)
-                .ValueGeneratedOnAdd()
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
+                entity.Property(e => e.InvoiceId).ValueGeneratedNever();
+
+                entity.HasKey(e => e.ProductId)
+                   .HasName("PK_InvoiceProducts");
+
+                entity.Property(e => e.ProductId).ValueGeneratedOnAdd();
+
 
                 entity.Property(e => e.Currency)
                     .HasMaxLength(200)
@@ -152,7 +126,9 @@ namespace ProductApp.Models
 
                 entity.Property(e => e.Discount).HasColumnType("decimal(5, 2)");
 
-                entity.Property(e => e.DistributorName).HasColumnType("text");
+                entity.Property(e => e.DistributorName)
+                    .IsRequired()
+                    .HasColumnType("text");
 
                 entity.Property(e => e.GrossPrice).HasColumnType("decimal(18, 0)");
 
@@ -164,38 +140,41 @@ namespace ProductApp.Models
 
                 entity.Property(e => e.ProductName).HasColumnType("text");
 
+                entity.Property(e => e.Sku)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.UnitOfMeasure)
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-
-            /*    entity.HasOne(d => d.Distributor)
-                   .WithMany(p => p.InvoiceProducts)
-                   .HasForeignKey(d => d.DistributorId)
-                   .HasConstraintName("FK__InvoicePr__Distr__398D8EEE");
-
-                entity.HasOne(d => d.Product)
-                  .WithMany(p => p.InvoiceProducts)
-                  .HasForeignKey(d => d.ProductId)
-                  .HasConstraintName("FK__InvoicePr__Produ__5EBF139D");
-
-               /* entity.HasOne(d => d.Warehouse)
-                  .WithMany(p => p.InvoiceProducts)
-                  .HasForeignKey(d => d.WarehouseId)
-                  .HasConstraintName("FK__InvoicePr__Wareh__5CD6CB2B");*/
-
-                  entity.HasOne(d => d.Invoice)
-                  .WithMany(p => p.InvoiceProducts)
-                  .HasForeignKey(d => d.InvoiceId)
-                  .HasConstraintName("FK__InvoicePr__Invoi__5FB337D6");
-
-
-
-
-
-
+                //entity.HasOne(d => d.Invoice)
+                //    .WithOne(p => p.InvoiceProduct)
+                //    .HasForeignKey<InvoiceProduct>(d => d.InvoiceId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK__InvoicePr__Invoi__5FB337D6");
             });
 
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.Property(e => e.ProductId).ValueGeneratedNever();
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.ProductName).HasColumnType("text");
+
+                entity.Property(e => e.Sku)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Warehouse>(entity =>
+            {
+                entity.Property(e => e.WarehouseId).ValueGeneratedNever();
+
+                entity.Property(e => e.WarehouseName).HasColumnType("text");
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

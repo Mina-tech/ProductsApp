@@ -15,7 +15,8 @@ export class Invoices extends Component {
             invoiceList: [], filterType: '', filterDate: null, loading: true
         }
     }
-
+    
+    
     changeFilterType = (e) => {
         this.setState({ filterType: e.target.value });
     }
@@ -35,25 +36,35 @@ export class Invoices extends Component {
     }
 
     render() {
+        
+       
         let invoiceList = this.state.invoiceList.slice();
+        
         if (this.state.filterType) {
-            invoiceList = invoiceList.filter(listItem => listItem.invoiceType.toLowerCase() === this.state.filterType.toLowerCase());
+            invoiceList = invoiceList.filter(listItem => {
+                if (listItem.invoiceType !== null) {
+                  return  listItem.invoiceType.toLowerCase() === this.state.filterType.toLowerCase()
+                }           
+            });
         }
         if (this.state.filterDate) {
             let newFilterDate = `${this.state.filterDate.getFullYear()}-${this.state.filterDate.getDate()}-${this.state.filterDate.getMonth()}`;
-            console.log(newFilterDate);
             invoiceList = invoiceList.filter(el => `${new Date(el.invoiceDate).getFullYear()}-${new Date(el.invoiceDate).getDate()}-${new Date(el.invoiceDate).getMonth()}` === newFilterDate);
         }
+        let newList = [];
+        invoiceList.map(listItem => newList.push(listItem.invoiceType));
+        let filteredList = newList.filter((item, pos) => newList.indexOf(item) == pos);
         return (
             <div>
-                <p>Lista profaktura</p>
+                <p>Lista profaktura:</p>
                 <ul className="invoice">
                     <li>  <input list="invoiceType" name = "invoiceType" placeholder="Tip profakture" onChange={this.changeFilterType} value={this.state.filterType} />
                         <datalist id="invoiceType">
-                            {invoiceList.map(listItem =>
-                                <option>{listItem.invoiceType}</option>
+                            {filteredList.map(el =>
+                                <option>{el}</option>
                             )}
                         </datalist>
+                       
                     </li>
                     <li className="datepicker-list-item">
                         <label className="datepicker" for="invoiceDate">Datum profakture:</label>
@@ -84,8 +95,12 @@ export class Invoices extends Component {
     }
 
     async GetInvoiceList() {
-        const response = await fetch('/Invoice/GetInvoices');
+        const response = await fetch('/Invoice/GetAllInvoices');
         const data = await response.json();
-        this.setState({ invoiceList: data, loading: false });
+
+        this.setState({
+            invoiceList: data,
+            loading: false
+        });
     }
 }

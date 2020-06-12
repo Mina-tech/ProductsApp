@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProductApp.Models
 {
-    public class InvoiceProduct
+    public partial class InvoiceProduct
     {
+        public int InvoiceId { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? ProductId { get; set; }
         public string ProductName { get; set; }
         public string DistributorName { get; set; }
         public string Sku { get; set; }
@@ -17,13 +22,6 @@ namespace ProductApp.Models
         public string UnitOfMeasure { get; set; }
         public decimal? GrossWeight { get; set; }
         public decimal? NetWeight { get; set; }
-        public int WarehouseId { get; set; }
-        public int ProductId { get; set; }
-        public int InvoiceId { get; set; }
-
-        public virtual Distributor Distributor { get; set; }
-        public virtual Product Product{ get; set; }
-        public virtual Invoice Invoice { get; set; }
-        public virtual Warehouse Warehouse { get; set; }
+        public int? WarehouseId { get; set; }
     }
 }
