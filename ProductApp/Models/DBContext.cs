@@ -119,6 +119,7 @@ namespace ProductApp.Models
 
                 entity.Property(e => e.ProductId).ValueGeneratedOnAdd();
 
+                entity.Property(e => e.Manufacturer).HasColumnType("text");
 
                 entity.Property(e => e.Currency)
                     .HasMaxLength(200)

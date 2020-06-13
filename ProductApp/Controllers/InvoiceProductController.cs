@@ -18,6 +18,23 @@ namespace ProductApp.Controllers
             this._invoiceProductRepository = invoiceProductRepository;
         }
 
-       
+        [Route("/Home/InsertInvoiceProduct")]
+        [HttpPost]
+        public InvoiceProduct InsertInvoiceProduct([FromBody]InvoiceProduct invoiceProduct)
+        {
+            var items = new List<InvoiceProduct>();
+
+            foreach (var item in items)
+            {
+                item.ProductId = 0;
+                _invoiceProductRepository.Add(item);
+            }
+
+            return new InvoiceProduct();
+
+        }
+            
+
+        }
+
     }
-}

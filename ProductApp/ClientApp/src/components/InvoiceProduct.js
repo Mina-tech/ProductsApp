@@ -1,31 +1,69 @@
 ﻿import React, { Component } from 'react';
 import './Invoices.css';
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
-import { Invoice } from './Invoice';
 
-export class InvoiceProduct extends Component {
+
+export class InvoiceProduct extends React.Component {
     static displayName = InvoiceProduct.name;
+
+
 
     constructor(props) {
         super(props);
-        this.state = {
-            invoiceProduct: [],
-            sku: '',
-            productName: '',
-            distributorName: '',
+        const product = {
+            sku: "",
+            productName: "",
+            manufacturer: "",
+            currency:"",
             qty: Number,
-            discount: Number,
             grossPrice: Number,
-            invoiceType:'',
+            discount: Number
+        }
+        this.state = {
+            invoiceProducts:[], //props.products,
+            product: product,
             rows: [],
             filterProductName:''
-            
-            
         }
     }
 
- 
+    onInputChange = (e) => {
+        console.log(e);
+        var value = e.target.value;
+
+        switch (e.target.id) {
+            case "txtSku":
+                this.state.product.sku = value;
+            case "txtProductName":
+                this.state.product.productName = value;
+            case "txtManufacturer":
+                this.state.product.manufacturer = value;
+            case "numDistributorId":
+                this.state.distributorId = value;
+            case "numQty":
+                this.state.product.qty = value;
+            case "numGrossPrice":
+                this.state.product.grossPrice = value;
+            case "numNetPrice":
+                this.state.netPrice = value;
+            case "txtCurrency":
+                this.state.product.currency = value;
+            case "txtUnitOfMeasure":
+                this.state.unitOfMeasure = value;
+            case "numGrossWeight":
+                this.state.grossWeight = value;
+            case "numNetWeight":
+                this.state.netWeight = value;
+            case "numWarehouseId":
+                this.state.warehouseId = value;
+
+                
+        }
+
+    }
+
     handleChange = (e) => {
+        console.log(e);
         let val = e.target.value
         if (e.target.name == 'qty' || e.target.name == 'discount' || e.target.name == 'grossPrice') {
             val = parseInt(e.target.value);
@@ -37,126 +75,189 @@ export class InvoiceProduct extends Component {
             let self = this;
             setTimeout(function () {
 
-                let invoiceProduct = self.state.invoiceProduct.slice();
+                let invoiceProduct = self.state.invoiceProducts.slice();
                 invoiceProduct = invoiceProduct.filter(listItem => listItem.productName.toLowerCase() === self.state.filterProductName.toLowerCase());
                 console.log(invoiceProduct);
                 self.setState({
-                    sku : invoiceProduct[0].sku,
-                   // qty: invoiceProduct[0].qty,
-                    distributorName: invoiceProduct[0].distributorName,
-                   // discount: invoiceProduct[0].discount,
-                    grossPrice: invoiceProduct[0].grossPrice,
-                    currency: invoiceProduct[0].currency
+                    product: {
+                        sku: invoiceProduct[0].sku,
+                        // qty: invoiceProduct[0].qty,
+                        distributorName: invoiceProduct[0].distributorName,
+                        // discount: invoiceProduct[0].discount,
+                        grossPrice: invoiceProduct[0].grossPrice,
+                        currency: invoiceProduct[0].currency
+                    }
+                 
                 });
-               
+
 
             }, 500);
         }
-      
-    
-      
-        this.setState({
-            [e.target.name]: val
-           
-        });
+
+
+
+    this.setState({
+       [e.target.name]: val
+
+    });
     }
 
 
-    
-   handleSubmit = (e) => {
-        e.preventDefault();
-        const invoiceProduct = {
-            Sku: this.state.sku,
-            ProductName: this.state.productName,
-            DistributorName: this.state.distributorName,
-            Qty: this.state.qty,
-            GrossPrice: this.state.grossPrice,
-            Discount: this.state.discount,
-            InvoiceType: this.state.invoiceType
-        };
-        //console.log(this.state.invoice);
-        fetch('/Home/InsertInvoiceView', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(invoiceProduct)
-        })
-            .then(res => {
-                console.log(res);
-                window.alert('Profaktura je uspešno dodata!');
-            })
-            
 
-            .catch(err => console.log("api Erorr: ", err));
-    }
+    handleSubmit = (e) => {
+         e.preventDefault();
+         const invoiceProducts = {
+             Sku: this.state.product.sku,
+             ProductName: this.state.product.productName,
+             Manufacturer: this.state.product.manufacturer,
+             Qty: this.state.product.qty,
+             GrossPrice: this.state.product.grossPrice,
+             Discount: this.state.product.discount,
+             DistributorId: this.state.distributorId,
+             NetPrice: this.state.NetPrice,
+             Currency: this.state.product.currency,
+             UnitOfMeasure: this.state.unitOfMeasure,
+             GrossWeight: this.state.grossWeight,
+             NetWeight: this.state.netWeight,
+             WarehouseId: this.state.warehouseId
 
-    handleAddRow = ()=> {
+             
+         };
+         //console.log(this.state.invoice);
+         fetch('/Home/InsertInvoiceProduct', {
+             method: 'POST',
+             headers: {
+                 'Accept': 'application/json',
+                 'Content-Type': 'application/json',
+             },
+             body: JSON.stringify(invoiceProducts)
+         })
+             .then(res => {
+                 console.log(res);
+                 window.alert('Profaktura je uspešno dodata!');
+             })
+
+
+             .catch(err => console.log("api Erorr: ", err));
+     }
+
+    handleAddRow = () => {
         var newData = {
             sku: this.state.sku,
             productName: this.state.productName,
-            distributorName: this.state.distributorName,
+            manufacuturer: this.state.manufacturer,
             qty: this.state.qty,
             grossPrice: this.state.grossPrice,
             discount: this.state.discount,
-            currency : this.state.currency
+            currency: this.state.currency
         }
         this.setState({ rows: [...this.state.rows, newData] });
         this.state.sku = '';
         this.state.productName = '';
-        this.state.distributorName = '';
+        this.state.manufacturer = '';
         this.state.qty = Number;
         this.state.grossPrice = Number;
         this.state.discount = Number;
         this.state.currency = '';
     }
-   
 
-    handleDeleteRow =(index)=> {
+
+    handleDeleteRow = (index) => {
         this.setState({
             rows: this.state.rows.slice(index, -1)
         });
     };
 
     componentDidMount() {
-        document.title = 'Unos Profaktura';
+        document.title = 'Unos artikala';
         this.GetInvoiceProduct();
     }
 
-    static getInvoiceProduct(invoiceProducts,invoicetype, sku, productName, distributorName, qty, grossPrice, discount, currency, handleChange ) {
+    //productsList = (products) => {
+    //    return
+    //    (
+    //        <table className='table table-striped' aria-labelledby="tabelLabel" >
+    //            <thead>
+    //                <tr>
+    //                    <th>Interna šifra</th>
+    //                    <th>Naziv artikla</th>
+    //                    <th>Proizvođač</th>
+    //                    <th>Količina</th>
+    //                    <th>Bruto cena artikla</th>
+    //                    <th>Rabat</th>
+    //                </tr>
+    //            </thead>
+
+    //            <tbody>
+    //                {products.map(r =>
+    //                    <tr key={r.index}>
+    //                        <td>{r.sku}</td>
+    //                        <td>{r.productName}</td>
+    //                        <td>{r.manufacturer}</td>
+    //                        <td>{r.qty}</td>
+    //                        <td>{r.grossPrice} {r.currency}</td>
+    //                        <td>{r.discount}</td>
+    //                    </tr>
+
+    //                )}
+    //            </tbody>
+    //        </table>
+    //    );
+    //}
+
+    //renderProducts = () => {
+    //    this.state.invoiceProducts.map((item, index) => {
+    //        return
+    //    });
+    //}
+
+    static getInvoiceProduct(invoiceProducts, product, rows) {
+        let newList = [];
+        let rowsList = [];
+        invoiceProducts.map(listItem => newList.push(listItem.productName));
+        rows.map(el => rowsList.push(el.productName));
+        console.log(rows);
+        let filteredList = newList.filter(el => rowsList.indexOf(el) < 0);
+
         return (
             <div className="container">
                 <ul className="invoice">
                     <li>
-                        <input list="productName" placeholder="Naziv artikla" name="productName" value={productName} onChange={handleChange.bind(this)} />
+
+                        <input list="productName" id="txtProductName" placeholder="Naziv artikla" name="productName" value={product.productName} onKeyUp={this.onInputChange} onChange={this.handleChange} />
                         <datalist id="productName">
-                            {invoiceProducts.map(invoiceProduct =>
-                                <option>{invoiceProduct.productName}</option>
+                            {filteredList.map(el =>
+                                <option>{el}</option>
                             )}
                         </datalist>
                     </li>
                     <li>
-                        <input list="distributorName" placeholder="Naziv dobavljača" name="distributorName" value={distributorName} onChange={handleChange.bind(this)} />
-                        <datalist id="distributorName">
+                        <input list="netPrice" id="numNetPrice" placeholder="Neto cena" onKeyUp={this.onInputChange} />
+                        <datalist id="netPrice">
                             {invoiceProducts.map(invoiceProduct =>
-                                <option>{invoiceProduct.distributorName}</option>
+                                <option>{invoiceProduct.netPrice}</option>
                             )}
                         </datalist>
                     </li>
                     <li>
-                        <input list="sku" placeholder="Interna šifra" name="sku" value={sku} onChange={handleChange.bind(this)} />
+                        <input list="manufacturer" id="txtManufacturer" placeholder="Proizvođač" name="manufacturer" value={product.manufacturer} onKeyUp={this.onInputChange} onChange={this.handleChange} />
+                        <datalist id="manufacturer">
+                            {invoiceProducts.map(el =>
+                                <option>{el.manufacturer}</option>
+                            )}
+                        </datalist>
+                    </li>
+                    <li>
+                        <input list="sku" id="txtSku" placeholder="Interna šifra" name="sku" value={product.sku} onKeyUp={this.onInputChange} onChange={this.handleChange} />
                         <datalist id="sku">
-                            {invoiceProducts.map(invoiceProduct =>
-                                <option>{invoiceProduct.sku}</option>
+                            {invoiceProducts.map(el =>
+                                <option>{el.sku}</option>
                             )}
                         </datalist>
                     </li>
-                    
-                    
-                   
+
                     <li>
-                        <input list="distributorId" placeholder="Interna šifra dobavljača" />
+                        <input list="distributorId" id="numDistributorId" placeholder="Interna šifra dobavljača" onKeyUp={this.onInputChange}/>
                         <datalist id="distributorId">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.distributorId}</option>
@@ -164,31 +265,31 @@ export class InvoiceProduct extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="qty" placeholder="Količina" name="qty" value={qty} onChange={handleChange.bind(this)} />
+                        <input list="qty" id="numQty" placeholder="Količina" name="qty" value={product.qty} onKeyUp={this.onInputChange} onChange={this.handleChange} />
                         <datalist id="qty">
-                            {invoiceProducts.map(invoiceProduct =>
-                                <option>{invoiceProduct.qty}</option>
+                            {invoiceProducts.map(el =>
+                                <option>{el.qty}</option>
                             )}
                         </datalist>
                     </li>
                     <li>
-                        <input list="grossPrice" placeholder="Cena artikla bruto" name="grossPrice" value={grossPrice} onChange={handleChange.bind(this)} />
+                        <input list="grossPrice" id="numGrossPrice" placeholder="Cena artikla bruto" name="grossPrice" value={product.grossPrice} onKeyUp={this.onInputChange} onChange={this.handleChange} />
                         <datalist id="grossPrice">
-                            {invoiceProducts.map(invoiceProduct =>
-                                <option>{invoiceProduct.grossPrice}</option>
+                            {invoiceProducts.map(el =>
+                                <option>{el.grossPrice}</option>
                             )}
                         </datalist>
                     </li>
                     <li>
-                        <input list="discount" placeholder="Rabat" name="discount" value={discount} onChange={handleChange.bind(this)} />
+                        <input list="discount" id="numDiscount" placeholder="Rabat" name="discount" value={product.discount} onKeyUp={this.onInputChange} onChange={this.handleChange} />
                         <datalist id="discount">
-                            {invoiceProducts.map(invoiceProduct =>
-                                <option>{invoiceProduct.discount}</option>
+                            {invoiceProducts.map(el =>
+                                <option>{el.discount}</option>
                             )}
                         </datalist>
                     </li>
                     <li>
-                        <input list="currency" placeholder="Valuta" value={currency} onChange={handleChange.bind(this)} />
+                        <input list="currency" id="txtCurrency" placeholder="Valuta" value={product.currency} onKeyUp={this.onInputChange} onChange={this.handleChange} />
                         <datalist id="currency">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.currency}</option>
@@ -196,16 +297,16 @@ export class InvoiceProduct extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="netPrice" placeholder="Neto cena" />
+                        <input list="netPrice" id="numNetPrice" placeholder="Neto cena" onKeyUp={this.onInputChange} />
                         <datalist id="netPrice">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.netPrice}</option>
                             )}
                         </datalist>
                     </li>
-         
+
                     <li>
-                        <input list="unitOfMeasure" placeholder="Jedinica mere" />
+                        <input list="unitOfMeasure" id="txtUnitOfMeasure" placeholder="Jedinica mere" onKeyUp={this.onInputChange} />
                         <datalist id="unitOfMeasure">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.unitOfMeasure}</option>
@@ -213,7 +314,7 @@ export class InvoiceProduct extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="grossWeight" placeholder="Bruto težina" />
+                        <input list="grossWeight" id="numGrossWeight" placeholder="Bruto težina" onKeyUp={this.onInputChange}/>
                         <datalist id="grossWeight">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.grossWeight}</option>
@@ -221,7 +322,7 @@ export class InvoiceProduct extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="netWeight" placeholder="Neto težina" />
+                        <input list="netWeight" id="numNetWeight"placeholder="Neto težina" onKeyUp={this.onInputChange}/>
                         <datalist id="netWeight">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.netWeight}</option>
@@ -229,32 +330,34 @@ export class InvoiceProduct extends Component {
                         </datalist>
                     </li>
                     <li>
-                        <input list="warehouseId" placeholder="Magacin" />
+                        <input list="warehouseId" id="numWarehouseId" placeholder="Magacin" onKeyUp={this.onInputChange} />
                         <datalist id="warehouseId">
                             {invoiceProducts.map(invoiceProduct =>
                                 <option>{invoiceProduct.warehouseId}</option>
                             )}
                         </datalist>
                     </li>
-                   
+
                 </ul>
             </div>
 
         );
     }
 
+
+
+
     render() {
-      
+
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProduct, this.state.invoiceType, this.state.sku, this.state.productName, this.state.distributorName, this.state.qty, this.state.grossPrice, this.state.discount, this.state.currency, this.handleChange);
-
+            : InvoiceProduct.getInvoiceProduct(this.state.invoiceProducts, this.state.product, this.state.rows);
         return (
             <div>
-                <p>Unos profaktura:</p>
+                <p>Unos artikala:</p>
                 {contents}
                 <table className='table table-striped' aria-labelledby="tabelLabel" >
-                    
+
                     <thead>
                         <tr>
                             <th>Interna šifra</th>
@@ -265,28 +368,28 @@ export class InvoiceProduct extends Component {
                             <th>Rabat</th>
                         </tr>
                     </thead>
-                   
+
                     <tbody>
                         {this.state.rows.map((r, index) =>
                             <tr key={r.index}>
-                                <td>{r.sku}</td> 
-                                <td>{r.productName}</td> 
+                                <td>{r.sku}</td>
+                                <td>{r.productName}</td>
                                 <td>{r.distributorName}</td>
                                 <td>{r.qty}</td>
                                 <td>{r.grossPrice} {r.currency}</td>
                                 <td>{r.discount}</td>
-                                <td><button onClick={(event) =>this.handleDeleteRow(event, r, index)} type="Submit">Obriši artikal</button></td>
+                                <td><button onClick={(event) => this.handleDeleteRow(event, r, index)} type="Submit">Obriši artikal</button></td>
                             </tr>
-                
+
                         )}
-                        </tbody>
+                    </tbody>
                 </table>
-               
+
 
                 <button onClick={this.handleAddRow} type="Submit">Dodaj artikal</button>
 
-                <button onClick={this.handleSubmit} type ="Submit">Dodaj profakturu</button>
-                
+                <button onClick={this.handleSubmit} type="Submit">Dodaj profakturu</button>
+
             </div>
         );
     }
@@ -294,8 +397,8 @@ export class InvoiceProduct extends Component {
     async GetInvoiceProduct() {
         const response = await fetch('/Home/GetAllInvoiceProducts');
         const data = await response.json();
-        console.log(data);
-        this.setState({ invoiceProduct: data, loading: false });
-        
+        this.setState({ invoiceProducts: data, loading: false });
     }
 }
+
+export default InvoiceProduct;
